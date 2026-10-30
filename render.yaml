@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: arifin-study-tracker
+    runtime: python
+    plan: starter
+    buildCommand: python -m py_compile server.py
+    startCommand: python server.py
+    envVars:
+      - key: TRACKER_PASSWORD
+        sync: false
+      - key: TRACKER_DATA_DIR
+        value: /var/data/tracker
+    disk:
+      name: tracker-memory
+      mountPath: /var/data
+      sizeGB: 1

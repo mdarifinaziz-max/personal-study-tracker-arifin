@@ -13,3 +13,13 @@ For a consistent database backup, run `python3 server.py --backup /path/to/backu
 The server intentionally binds only to localhost and checks request origins. It has no multi-user authentication and is not configured for public deployment. Hosting across devices requires authentication, HTTPS, a persistent volume, and off-device backups.
 
 Validation: `python3 -m unittest -v` tests actual HTTP saves, stale-write rejection, invalid payload rejection, revision recovery, process restart persistence, and backup creation. Browser interaction has not yet been automated.
+
+## Open without a server
+
+Open index.html with memory.js in the same folder, or serve both on a static host. When the backend is absent, the tracker uses browser storage and clearly labels that mode. This does not provide cross-device sync. Export before clearing browser data. If you later use a server, use “Download browser-only work” to recover unsynced work and import it deliberately; it never silently overwrites the server copy.
+
+## Hosted version with password sign-in
+
+The included render.yaml provisions a Python service and persistent disk on Render. This uses a paid plan; check Render's current pricing before creating it. In Render, create a Blueprint from this GitHub repository, enter a strong TRACKER_PASSWORD, and deploy. Open the HTTPS address supplied by Render. Sign in with username `arifin` and your chosen password in the browser's sign-in prompt. Never enter your ChatGPT password here. This is HTTP Basic authentication over Render's HTTPS, not a ChatGPT or Google account. The server refuses hosted startup without a password.
+
+The persistent disk keeps the database across restarts and deployments. Keep exported backups outside the service as well; deleting the service/disk can remove the database. The deployment configuration is prepared but has not been deployed or tested against Render in this task.

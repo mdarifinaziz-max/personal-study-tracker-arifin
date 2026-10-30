@@ -1491,7 +1491,7 @@ button.red{background:var(--red);color:white}
 
 </div>
 
-<script src="/memory.js"></script>
+<script src="./memory.js"></script>
 <script>
 (async()=>{
 const remote = await window.memoryStore.open();
@@ -2560,7 +2560,7 @@ function resetData(){
 }
 render();
 renderSchedule();
-})().catch(e=>{document.body.textContent="Unable to load saved data. Please reload when the server is available. Your saved data has not been changed."; console.error(e);});
+})().catch(e=>{const notice=document.createElement("div"); notice.setAttribute("role","alert"); notice.style.cssText="position:fixed;top:0;left:0;right:0;padding:18px;background:#641c23;color:white;z-index:99999"; notice.textContent="The tracker could not start: "+e.message+". Existing saved data has not been deleted.";document.body.prepend(notice); console.error(e);});
 </script>
 </body>
 </html>

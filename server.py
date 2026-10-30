@@ -1,5 +1,5 @@
 """Private single-user tracker. Standard library only."""
-import json, os, sqlite3, argparse
+import json, os, sqlite3, argparse, base64, hmac
 from pathlib import Path
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 ROOT=Path(__file__).resolve().parent
@@ -23,11 +23,21 @@ class Handler(BaseHTTPRequestHandler):
     def allowed(self):
         host=self.headers.get('Host','')
         expected=f'127.0.0.1:{self.server.server_port}'
-        if host not in (expected,f'localhost:{self.server.server_port}'):
+        public_host=os.environ.get('RENDER_EXTERNAL_HOSTNAME','')
+        if host not in (expected,f'localhost:{self.server.server_port}',public_host):
             self.reply(403,{'error':'Local access only'});return False
         origin=self.headers.get('Origin')
-        if origin and origin!=f'http://{host}':
+        if origin and origin not in (f'http://{host}',f'https://{host}'):
             self.reply(403,{'error':'Cross-origin access denied'});return False
+        password=os.environ.get('TRACKER_PASSWORD')
+        if password:
+            try:
+                scheme,encoded=self.headers.get('Authorization','').split(' ',1)
+                username,provided=base64.b64decode(encoded,validate=True).decode().split(':',1)
+                valid=scheme.lower()=='basic' and username=='arifin' and hmac.compare_digest(provided.encode(),password.encode())
+            except (ValueError,UnicodeError):valid=False
+            if not valid:
+                self.send_response(401);self.send_header('WWW-Authenticate','Basic realm="Personal study tracker", charset="UTF-8"');self.send_header('Content-Length','0');self.end_headers();return False
         return True
     def do_GET(self):
         if not self.allowed():return
@@ -64,11 +74,14 @@ class Handler(BaseHTTPRequestHandler):
             cursor=db.execute('INSERT INTO revisions(data) VALUES (?)',(encoded,));new=cursor.lastrowid
         self.reply(200,{'revision':new})
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=8000);parser.add_argument('--backup',type=Path)
+    parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=int(os.environ.get('PORT','8000')));parser.add_argument('--backup',type=Path)
     args=parser.parse_args()
     if args.backup:
         with connect() as source, sqlite3.connect(args.backup) as target:source.backup(target)
         print('Backup complete:',args.backup)
     else:
         print(f'Tracker running on port {args.port}',flush=True)
-        ThreadingHTTPServer(('127.0.0.1',args.port),Handler).serve_forever()
+        host='0.0.0.0' if os.environ.get('RENDER_EXTERNAL_HOSTNAME') else '127.0.0.1'
+        if host=='0.0.0.0' and not os.environ.get('TRACKER_PASSWORD'):
+            raise SystemExit('TRACKER_PASSWORD is required for hosted deployment')
+        ThreadingHTTPServer((host,args.port),Handler).serve_forever()
