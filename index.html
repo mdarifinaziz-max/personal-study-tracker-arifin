@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cooked? — Marks Journal</title>
+<style>
+:root{
+  --ink:#171717;
+  --paper:#f7f0e7;
+  --paper2:#fffaf3;
+  --red:#e85d45;
+  --blue:#7ba7d9;
+  --green:#86b88c;
+  --yellow:#f4c95d;
+  --pink:#e9a6b0;
+  --line:#1f1f1f;
+  --muted:#6c655d;
+  --field:#ffffff;
+  --field-text:#0b0b0b;
+  --field-focus:#fff0a6;
+
+  --math:#f28c28;
+  --physics:#5d8fc9;
+  --biology:#78a879;
+  --chemistry:#c94f8b;
+  --ict:#23395d;
+  --english:#ef9eb7;
+  --bangla:#b8bcc2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.85), transparent 28%),
+    linear-gradient(0deg, rgba(30,30,30,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,30,30,.014) 1px, transparent 1px),
+    var(--paper);
+  background-size:auto, 28px 28px, 28px 28px, auto;
+  font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+}
+.shell{max-width:1240px;margin:0 auto;padding:26px 22px 60px}
+
+.masthead{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:22px;
+  align-items:end;
+  border-bottom:3px solid var(--line);
+  padding-bottom:18px;
+  margin-bottom:20px;
+}
+.kicker{
+  display:inline-block;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  padding:6px 9px;
+  border:2px solid var(--line);
+  background:var(--yellow);
+  transform:rotate(-1.5deg);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size:clamp(52px,8vw,108px);
+  line-height:.84;
+  letter-spacing:-.07em;
+  font-weight:700;
+}
+.deck{
+  margin:8px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size:19px;
+  line-height:1.45;
+  max-width:620px;
+}
+.issue{
+  justify-self:end;
+  text-align:right;
+  font-size:13px;
+  line-height:1.5;
+  color:var(--muted);
+}
+.issue strong{color:var(--ink)}
+.issue .target{
+  display:inline-block;
+  margin-top:10px;
+  padding:8px 12px;
+  border:2px solid var(--line);
+  background:var(--pink);
+  color:var(--ink);
+  font-size:22px;
+  font-weight:900;
+  transform:rotate(1.25deg);
+}
+
+.ticker{
+  display:flex;
+  gap:14px;
+  overflow:auto;
+  padding:3px 0 18px;
+  scrollbar-width:none;
+}
+.ticker::-webkit-scrollbar{display:none}
+.ticker span{
+  white-space:nowrap;
+  border:2px solid var(--line);
+  background:var(--paper2);
+  padding:8px 11px;
+  font-weight:800;
+  font-size:13px;
+  box-shadow:4px 4px 0 var(--line);
+}
+.ticker span:nth-child(2n){background:#eef5fc}
+.ticker span:nth-child(3n){background:#fbe9ec}
+
+.topgrid{
+  display:grid;
+  grid-template-columns:1.25fr .9fr .85fr;
+  gap:16px;
+  margin-bottom:20px;
+}
+.card{
+  background:var(--paper2);
+  border:2px solid var(--line);
+  box-shadow:6px 6px 0 var(--line);
+  padding:18px;
+  position:relative;
+}
+.card.blue{background:#edf4fb}
+.card.green{background:#edf6ee}
+.card.yellow{background:#fff5cc}
+.card .eyebrow{
+  font-size:11px;
+  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:.12em;
+  margin-bottom:8px;
+}
+.big{
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:56px;
+  line-height:.9;
+  letter-spacing:-.05em;
+}
+.small{font-size:13px;color:var(--muted);line-height:1.45;margin-top:8px}
+.inline-input{
+  width:92px;
+  border:0;
+  border-bottom:3px solid var(--line);
+  background:var(--field);
+  color:var(--field-text);
+  border:2px solid var(--line);
+  box-shadow:2px 2px 0 var(--line);
+  padding:5px 7px;
+  font:inherit;
+  font-weight:900;
+  text-align:center;
+  outline:none;
+}
+.inline-input:focus{
+  background:var(--field-focus);
+  box-shadow:4px 4px 0 var(--line);
+}
+.sticker{
+  position:absolute;
+  top:-11px;
+  right:12px;
+  background:var(--red);
+  color:white;
+  border:2px solid var(--line);
+  padding:5px 8px;
+  font-size:11px;
+  font-weight:900;
+  transform:rotate(4deg);
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  border-top:3px solid var(--line);
+  padding-top:14px;
+  margin:30px 0 14px;
+}
+.section-head h2{
+  margin:0;
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:38px;
+  letter-spacing:-.04em;
+}
+.section-head p{margin:0;color:var(--muted);font-size:13px}
+
+.subjects{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.subject{
+  border:2px solid var(--line);
+  background:var(--paper2);
+  box-shadow:5px 5px 0 var(--line);
+  padding:16px;
+  position:relative;
+  overflow:hidden;
+}
+.subject::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:10px;
+  background:#d8d8d8;
+}
+.subject.math{background:#fff0dc}
+.subject.math::before{background:var(--math)}
+
+.subject.physics{background:#e9f2fb}
+.subject.physics::before{background:var(--physics)}
+
+.subject.biology{background:#edf6ed}
+.subject.biology::before{background:var(--biology)}
+
+.subject.chemistry{background:#f9e8f1}
+.subject.chemistry::before{background:var(--chemistry)}
+
+.subject.ict{background:#e7edf5}
+.subject.ict::before{background:var(--ict)}
+
+.subject.english{background:#fcebf1}
+.subject.english::before{background:var(--english)}
+
+.subject.bangla{background:#eeeeef}
+.subject.bangla::before{background:var(--bangla)}
+
+.subject.custom{background:#f6f2ea}
+.subject.custom::before{background:#9b8b75}
+.subject-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:2px solid var(--line);
+  padding-bottom:10px;
+  margin-bottom:12px;
+}
+.subject-name{
+  width:min(280px,70%);
+  color:#111;
+  border:2px solid var(--line);
+  background:var(--field);
+  color:var(--field-text);
+  box-shadow:2px 2px 0 var(--line);
+  padding:6px 8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:-.03em;
+  outline:none;
+}
+.subject-name:focus{
+  background:var(--field-focus);
+  box-shadow:4px 4px 0 var(--line);
+}
+.status{
+  border:2px solid var(--line);
+  padding:6px 9px;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transform:rotate(1deg);
+}
+.status.chill{background:#dff0df}
+.status.work{background:#fff1b8}
+.status.danger{background:#ffd6cf}
+.status.cooked{background:var(--ink);color:white}
+
+.mark-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+}
+.mark label{
+  display:block;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:5px;
+}
+.mark input{
+  width:100%;
+  border:2px solid var(--line);
+  background:var(--field);
+  color:var(--field-text);
+  padding:9px 7px;
+  font-size:16px;
+  font-weight:800;
+  outline:none;
+  box-shadow:2px 2px 0 rgba(31,31,31,.55);
+}
+.mark input:hover,
+.subject-name:hover,
+.inline-input:hover{
+  border-color:#000;
+}
+.mark input:focus{
+  background:var(--field-focus);
+  color:#000;
+  border-color:#000;
+  box-shadow:4px 4px 0 var(--line);
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:12px;
+}
+.metric{
+  border-top:2px solid var(--line);
+  padding-top:8px;
+  background:rgba(255,255,255,.42);
+  padding:8px 6px 4px;
+}
+.metric .lab{
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:900;
+  color:var(--muted);
+}
+.metric .val{
+  margin-top:3px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+  font-weight:700;
+}
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:22px;
+}
+button{
+  appearance:none;
+  border:2px solid var(--line);
+  background:var(--paper2);
+  color:var(--ink);
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:3px 3px 0 var(--line);
+  transition:.12s transform,.12s box-shadow;
+}
+button:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--line)}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+button.primary{background:var(--blue)}
+button.red{background:var(--red);color:white}
+
+.editorial-note{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:.7fr 1.3fr;
+  gap:18px;
+  align-items:start;
+}
+.pullquote{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:31px;
+  line-height:1.06;
+  letter-spacing:-.03em;
+  border-left:8px solid var(--red);
+  padding-left:16px;
+}
+.bodycopy{
+  font-size:14px;
+  line-height:1.65;
+  color:#39342f;
+}
+.footer{
+  margin-top:34px;
+  border-top:3px solid var(--line);
+  padding-top:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  font-size:12px;
+  color:var(--muted);
+}
+@media(max-width:900px){
+  .masthead,.topgrid,.editorial-note{grid-template-columns:1fr}
+  .issue{text-align:left;justify-self:start}
+  .subjects{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .shell{padding:18px 14px 42px}
+  .mark-grid{grid-template-columns:repeat(2,1fr)}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:60px}
+}
+
+.overall{
+  margin-top:28px;
+  border:3px solid var(--line);
+  background:#171717;
+  color:#fff;
+  box-shadow:8px 8px 0 var(--red);
+  padding:22px;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
+  align-items:end;
+}
+.overall .eyebrow{color:#d8d8d8}
+.overall-title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:38px;
+  letter-spacing:-.04em;
+  margin:0 0 6px;
+}
+.overall-value{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:72px;
+  line-height:.9;
+  letter-spacing:-.06em;
+  font-weight:700;
+}
+.overall-meta{
+  font-size:13px;
+  line-height:1.55;
+  color:#d7d7d7;
+}
+.overall-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.overall-stat{
+  border:2px solid #fff;
+  padding:12px;
+  background:#242424;
+}
+.overall-stat .lab{
+  font-size:10px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  font-weight:900;
+  color:#cfcfcf;
+}
+.overall-stat .val{
+  margin-top:4px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:30px;
+  font-weight:700;
+}
+@media(max-width:900px){
+  .overall{grid-template-columns:1fr}
+}
+
+
+.practical-note{
+  margin-top:8px;
+  font-size:11px;
+  line-height:1.45;
+  color:var(--muted);
+}
+.practical-cap{
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+  margin-top:8px;
+  font-size:11px;
+  font-weight:800;
+}
+.practical-cap input{
+  width:58px;
+  background:#fff;
+  color:#000;
+  border:2px solid var(--line);
+  padding:5px 6px;
+  font-weight:900;
+  text-align:center;
+}
+
+
+.subject-top-actions{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.syllabus-launch{
+  min-width:112px;
+  padding:7px 9px;
+  background:#fff;
+  color:#111;
+  text-align:left;
+  box-shadow:3px 3px 0 var(--line);
+}
+.syllabus-launch .sl-label{
+  display:block;
+  font-size:9px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  font-weight:900;
+}
+.syllabus-launch .sl-count{
+  display:block;
+  margin-top:2px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  line-height:1;
+}
+.syllabus-launch .sl-priority{
+  display:block;
+  margin-top:3px;
+  font-size:9px;
+  color:#a3261d;
+  font-weight:900;
+}
+.syllabus-panel{
+  display:none;
+  border:2px solid var(--line);
+  background:rgba(255,255,255,.78);
+  margin:0 0 14px;
+  padding:12px;
+  box-shadow:4px 4px 0 rgba(31,31,31,.55);
+}
+.syllabus-panel.open{display:block}
+.syllabus-panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:10px;
+}
+.syllabus-panel-head h3{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:25px;
+  letter-spacing:-.03em;
+}
+.syllabus-overview{
+  font-size:11px;
+  line-height:1.45;
+  color:var(--muted);
+  text-align:right;
+}
+.syllabus-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.syllabus-paper{
+  min-width:0;
+}
+.syllabus-paper-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid var(--line);
+  margin-bottom:7px;
+  padding-bottom:5px;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.syllabus-list{
+  display:grid;
+  gap:7px;
+}
+.syllabus-item{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:8px;
+  align-items:center;
+  border:2px solid #8d8d8d;
+  background:#f1f1f1;
+  padding:8px;
+}
+.syllabus-item.priority{
+  border-color:#b42318;
+  background:#ffe3df;
+  box-shadow:3px 3px 0 #b42318;
+}
+.syllabus-item.done{
+  background:#dff0df;
+  border-color:#46734d;
+  opacity:.82;
+}
+.syllabus-item.done.priority{
+  background:#eadbd7;
+  border-color:#8f4137;
+  box-shadow:none;
+}
+.syllabus-item.doing{
+  background:#fff0b8;
+  border-color:#8c6a00;
+}
+.syllabus-check{
+  width:32px;
+  height:32px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  color:#111;
+  box-shadow:2px 2px 0 var(--line);
+  font-size:16px;
+}
+.syllabus-item.done .syllabus-check{
+  background:#315d39;
+  color:#fff;
+}
+.syllabus-item.doing .syllabus-check{
+  background:#f4c95d;
+}
+.syllabus-copy{
+  min-width:0;
+}
+.syllabus-chapter{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:#555;
+}
+.syllabus-name{
+  margin-top:2px;
+  font-size:13px;
+  line-height:1.25;
+  font-weight:800;
+}
+.priority-tag{
+  align-self:start;
+  background:#b42318;
+  color:#fff;
+  border:1.5px solid #111;
+  padding:3px 5px;
+  font-size:8px;
+  line-height:1;
+  letter-spacing:.08em;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.syllabus-empty{
+  border:2px dashed #777;
+  padding:12px;
+  background:#fff;
+  font-size:12px;
+  line-height:1.5;
+  color:#555;
+}
+.syllabus-custom-add{
+  margin-top:9px;
+  background:#fff;
+  font-size:11px;
+  padding:7px 9px;
+}
+.syllabus-legend{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:900;
+}
+.syllabus-legend span{
+  border:1.5px solid var(--line);
+  padding:4px 6px;
+  background:#f1f1f1;
+}
+.syllabus-legend .lg-doing{background:#fff0b8}
+.syllabus-legend .lg-done{background:#dff0df}
+.syllabus-legend .lg-priority{background:#ffe3df;border-color:#b42318;color:#a3261d}
+
+@media(max-width:760px){
+  .syllabus-columns{grid-template-columns:1fr}
+  .subject-top{align-items:stretch}
+  .subject-top-actions{justify-content:flex-start}
+}
+
+
+.syllabus-copy{
+  cursor:pointer;
+}
+.syllabus-copy:focus-visible{
+  outline:3px solid #111;
+  outline-offset:3px;
+}
+.chapter-progress-pill{
+  min-width:44px;
+  text-align:center;
+  border:1.5px solid var(--line);
+  background:#fff;
+  padding:3px 5px;
+  font-size:9px;
+  font-weight:900;
+}
+.chapter-detail{
+  display:none;
+  grid-column:1 / -1;
+  border-top:1.5px dashed #777;
+  margin-top:4px;
+  padding-top:10px;
+}
+.syllabus-item.expanded .chapter-detail{display:block}
+.chapter-detail-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-end;
+  margin-bottom:8px;
+}
+.chapter-detail-title{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.chapter-detail-score{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:22px;
+  font-weight:700;
+}
+.chapter-slider{
+  width:100%;
+  accent-color:#111;
+  cursor:pointer;
+}
+.chapter-segments{
+  display:grid;
+  gap:3px;
+  margin:5px 0 10px;
+}
+.chapter-segment{
+  height:7px;
+  border:1px solid #888;
+  background:#ddd;
+}
+.chapter-segment.done{background:#4e7b56;border-color:#315d39}
+.chapter-segment.skipped{background:#e85d45;border-color:#9f2f20}
+.chapter-segment.future{background:#e2e2e2}
+.lesson-list{
+  display:grid;
+  gap:6px;
+}
+.lesson-row{
+  width:100%;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:8px;
+  align-items:start;
+  text-align:left;
+  border:1.5px solid #aaa;
+  background:#fff;
+  color:#111;
+  padding:8px;
+  box-shadow:none;
+  cursor:pointer;
+}
+.lesson-row:hover{transform:none;box-shadow:none}
+.lesson-row.done{
+  background:#e6f2e6;
+  border-color:#5c8062;
+}
+.lesson-row.skipped{
+  background:#ffe2de;
+  border-color:#b42318;
+}
+.lesson-row.future{
+  background:#f3f3f3;
+  color:#666;
+}
+.lesson-mark{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid #555;
+  background:#fff;
+  font-size:12px;
+  font-weight:900;
+}
+.lesson-row.done .lesson-mark{
+  background:#315d39;
+  color:#fff;
+}
+.lesson-row.skipped .lesson-mark{
+  background:#b42318;
+  color:#fff;
+}
+.lesson-name{
+  font-size:12px;
+  line-height:1.35;
+  font-weight:700;
+}
+.lesson-meta{
+  font-size:9px;
+  color:#666;
+  white-space:nowrap;
+  padding-top:2px;
+}
+.lesson-meta.priority{
+  color:#a3261d;
+  font-weight:900;
+}
+.detail-hint{
+  margin-top:8px;
+  font-size:10px;
+  line-height:1.4;
+  color:#666;
+}
+
+
+.exam-desk{
+  margin:24px 0 26px;
+  border:3px solid var(--line);
+  background:#fffdf8;
+  box-shadow:7px 7px 0 var(--line);
+}
+.exam-desk-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:end;
+  padding:17px;
+  border-bottom:2px solid var(--line);
+  background:#f3ede3;
+}
+.exam-desk-head h2{
+  margin:2px 0 0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:34px;
+  letter-spacing:-.04em;
+}
+.next-event{
+  min-width:250px;
+  max-width:370px;
+  border:2px solid var(--line);
+  background:#111;
+  color:#fff;
+  padding:10px 12px;
+}
+.next-event .ne-kicker{
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#cfcfcf;
+}
+.next-event .ne-main{
+  margin-top:3px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  line-height:1.1;
+}
+.next-event .ne-sub{
+  margin-top:5px;
+  font-size:10px;
+  color:#d6d6d6;
+  line-height:1.35;
+}
+.exam-form{
+  display:grid;
+  grid-template-columns:145px 105px 130px minmax(150px,1fr) minmax(220px,1.6fr) auto;
+  gap:8px;
+  align-items:end;
+  padding:14px 17px;
+  border-bottom:2px solid var(--line);
+}
+.exam-field label{
+  display:block;
+  margin-bottom:4px;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.exam-field input,
+.exam-field select{
+  width:100%;
+  min-height:39px;
+  box-sizing:border-box;
+  border:2px solid var(--line);
+  background:#fff;
+  color:#000;
+  padding:7px 8px;
+  font:inherit;
+  font-size:13px;
+  font-weight:700;
+  outline:none;
+}
+.exam-field input:focus,
+.exam-field select:focus{
+  background:var(--field-focus);
+  box-shadow:3px 3px 0 var(--line);
+}
+.exam-field input[readonly]{
+  background:#ececec;
+  color:#555;
+}
+.exam-add{
+  min-height:39px;
+  white-space:nowrap;
+}
+.schedule-list{
+  display:grid;
+}
+.schedule-row{
+  display:grid;
+  grid-template-columns:92px 92px minmax(130px,.8fr) minmax(220px,1.7fr) 105px auto;
+  gap:10px;
+  align-items:center;
+  padding:11px 14px;
+  border-bottom:1.5px solid #aaa;
+}
+.schedule-row:last-child{border-bottom:0}
+.schedule-row.done{
+  opacity:.55;
+  background:#ededed;
+}
+.schedule-date{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+  font-weight:700;
+}
+.schedule-day{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#666;
+}
+.schedule-subject{
+  font-weight:900;
+  font-size:13px;
+}
+.schedule-syllabus{
+  font-size:12px;
+  line-height:1.35;
+  color:#444;
+}
+.schedule-type{
+  justify-self:start;
+  border:1.5px solid var(--line);
+  padding:4px 6px;
+  background:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.schedule-type.homework{background:#fff0b8}
+.schedule-type.deadline{background:#ffe0dc;color:#9f241a;border-color:#b42318}
+.schedule-type.exam{background:#e8eef8}
+.schedule-countdown{
+  font-size:10px;
+  font-weight:900;
+  text-align:right;
+  color:#555;
+}
+.schedule-countdown.urgent{color:#b42318}
+.schedule-actions{
+  display:flex;
+  gap:5px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+.schedule-actions button{
+  padding:5px 7px;
+  font-size:10px;
+  box-shadow:none;
+}
+.schedule-empty{
+  padding:18px;
+  color:#666;
+  font-size:12px;
+}
+@media(max-width:1050px){
+  .exam-form{grid-template-columns:1fr 1fr 1fr}
+  .exam-add{width:100%}
+  .schedule-row{grid-template-columns:90px 80px 1fr 85px}
+  .schedule-syllabus{grid-column:3 / -1}
+  .schedule-actions{grid-column:1 / -1;justify-content:flex-start}
+}
+@media(max-width:650px){
+  .exam-desk-head{grid-template-columns:1fr}
+  .next-event{min-width:0;max-width:none}
+  .exam-form{grid-template-columns:1fr 1fr}
+  .schedule-row{grid-template-columns:85px 1fr}
+  .schedule-day,.schedule-type,.schedule-countdown{justify-self:start;text-align:left}
+  .schedule-syllabus,.schedule-actions{grid-column:1 / -1}
+}
+
+
+/* V11 compact agenda + collapsible routine */
+.agenda-shell{
+  margin:24px 0 28px;
+}
+.agenda-toggle{
+  width:100%;
+  border:3px solid var(--line);
+  background:#111;
+  color:#fff;
+  box-shadow:7px 7px 0 var(--line);
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  text-align:left;
+}
+.agenda-toggle:hover{
+  transform:none;
+  box-shadow:7px 7px 0 var(--line);
+}
+.agenda-toggle-main{
+  min-width:0;
+}
+.agenda-toggle .eyebrow{
+  color:#cfcfcf;
+}
+.agenda-toggle-title{
+  margin:2px 0 0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:30px;
+  line-height:1;
+  letter-spacing:-.04em;
+}
+.agenda-toggle-sub{
+  margin-top:6px;
+  font-size:11px;
+  color:#d7d7d7;
+  line-height:1.4;
+}
+.agenda-toggle-side{
+  flex:0 0 auto;
+  text-align:right;
+}
+.agenda-toggle-next{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.agenda-toggle-chev{
+  margin-top:5px;
+  font-size:20px;
+  line-height:1;
+}
+.agenda-details{
+  display:none;
+  border:3px solid var(--line);
+  border-top:0;
+  background:#fffdf8;
+  box-shadow:7px 7px 0 var(--line);
+}
+.agenda-shell.open .agenda-details{
+  display:block;
+}
+.agenda-shell.open .agenda-toggle-chev{
+  transform:rotate(180deg);
+}
+.agenda-summary{
+  padding:13px 16px;
+  border-bottom:2px solid var(--line);
+  background:#f3ede3;
+  font-size:11px;
+  line-height:1.45;
+}
+.exam-form{
+  border-bottom:2px solid var(--line);
+}
+.day-agenda{
+  display:grid;
+}
+.day-row{
+  display:grid;
+  grid-template-columns:125px minmax(0,1fr);
+  border-bottom:2px solid var(--line);
+  min-width:0;
+}
+.day-row:last-child{
+  border-bottom:0;
+}
+.day-row.done{
+  opacity:.62;
+}
+.day-date{
+  padding:14px 12px;
+  border-right:2px solid var(--line);
+  background:#eee7dc;
+}
+.day-date-num{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:23px;
+  font-weight:700;
+  line-height:1;
+}
+.day-date-name{
+  margin-top:5px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#666;
+}
+.day-date-count{
+  margin-top:8px;
+  font-size:9px;
+  color:#777;
+  text-transform:uppercase;
+  font-weight:900;
+}
+.day-items{
+  min-width:0;
+  display:grid;
+}
+.day-item{
+  display:grid;
+  grid-template-columns:105px minmax(140px,.75fr) minmax(220px,1.5fr) 96px auto;
+  gap:10px;
+  align-items:center;
+  padding:11px 12px;
+  border-bottom:1px dashed #aaa;
+  min-width:0;
+}
+.day-item:last-child{
+  border-bottom:0;
+}
+.day-item.done{
+  opacity:.55;
+  background:#efefef;
+}
+.day-partition{
+  height:1px;
+  background:#999;
+  margin:0 12px;
+}
+.day-type{
+  justify-self:start;
+  border:1.5px solid var(--line);
+  padding:4px 6px;
+  background:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.day-type.homework{background:#fff0b8}
+.day-type.deadline{background:#ffe0dc;color:#9f241a;border-color:#b42318}
+.day-type.exam{background:#e8eef8}
+.day-type.study-target{background:#e7f2e7}
+.day-subject{
+  font-size:13px;
+  font-weight:900;
+  min-width:0;
+}
+.day-syllabus{
+  font-size:12px;
+  line-height:1.35;
+  color:#444;
+  min-width:0;
+}
+.day-countdown{
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+  text-align:right;
+  color:#666;
+}
+.day-countdown.urgent{
+  color:#b42318;
+}
+.day-actions{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.day-actions button{
+  padding:5px 7px;
+  box-shadow:none;
+  font-size:10px;
+}
+.schedule-empty{
+  padding:18px;
+  color:#666;
+  font-size:12px;
+}
+
+/* Routine lives under the agenda */
+.routine-wrap{
+  border-top:3px solid var(--line);
+}
+.routine-toggle{
+  width:100%;
+  background:#fff;
+  color:#111;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+}
+.routine-toggle:hover{
+  transform:none;
+  box-shadow:none;
+  background:#f6f1e8;
+}
+.routine-toggle strong{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+}
+.routine-toggle span{
+  font-size:10px;
+  color:#666;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.routine-body{
+  display:none;
+  border-top:2px solid var(--line);
+}
+.routine-wrap.open .routine-body{
+  display:block;
+}
+.routine-grid{
+  display:grid;
+}
+.routine-day{
+  display:grid;
+  grid-template-columns:125px minmax(0,1fr);
+  border-bottom:1.5px solid #aaa;
+}
+.routine-day:last-child{border-bottom:0}
+.routine-date{
+  padding:12px;
+  border-right:2px solid var(--line);
+  background:#f2eee7;
+}
+.routine-date strong{
+  display:block;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+}
+.routine-date span{
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:900;
+  color:#666;
+}
+.routine-blocks{
+  display:grid;
+}
+.routine-block{
+  padding:10px 12px;
+  border-bottom:1px dashed #aaa;
+  line-height:1.4;
+}
+.routine-block:last-child{border-bottom:0}
+.routine-block .rb-subject{
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.routine-block .rb-task{
+  margin-top:2px;
+  font-size:12px;
+}
+.routine-block .rb-note{
+  margin-top:3px;
+  font-size:10px;
+  color:#666;
+}
+@media(max-width:900px){
+  .day-item{
+    grid-template-columns:95px minmax(120px,.8fr) minmax(0,1.4fr);
+  }
+  .day-countdown{grid-column:1}
+  .day-actions{grid-column:2 / -1;justify-content:flex-start}
+}
+@media(max-width:650px){
+  .agenda-toggle{align-items:flex-start}
+  .agenda-toggle-side{max-width:40%}
+  .agenda-toggle-title{font-size:26px}
+  .day-row,.routine-day{grid-template-columns:1fr}
+  .day-date,.routine-date{
+    border-right:0;
+    border-bottom:2px solid var(--line);
+  }
+  .day-item{
+    grid-template-columns:1fr 1fr;
+  }
+  .day-syllabus,.day-actions{
+    grid-column:1 / -1;
+  }
+  .day-countdown{
+    grid-column:auto;
+    text-align:left;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="masthead">
+    <div>
+      <span class="kicker">Academic survival desk</span>
+      <h1>Cooked?</h1>
+      <p class="deck">A mildly judgmental marks journal for figuring out whether 85% is alive, endangered, or mathematically deceased.</p>
+    </div>
+    <div class="issue">
+      <div><strong>Issue:</strong> Test Exam Season</div>
+      <div><strong>Formula:</strong> 10% HY + CT 30/30 + Test 75→60</div>
+      <div class="target">Target <input class="inline-input" id="target" type="number" value="85" min="0" max="100" step="0.1">%</div>
+    </div>
+  </header>
+
+  <div class="ticker">
+    <span>ENTER THE MARK, NOT THE EMOTIONAL DAMAGE</span>
+    <span>ONE BAD CT ≠ CAREER ENDING EVENT</span>
+    <span>BLANK FUTURE MARKS COUNT AS STILL AVAILABLE</span>
+    <span>MATHEMATICS WILL NOT ACCEPT VIBES AS INPUT</span>
+  </div>
+
+  <div class="card" style="margin-bottom:18px;background:#fffdf7">
+    <div class="eyebrow">Exact grading math</div>
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.25">
+      2nd paper = ((Written + Practical) ÷ 100 × 60) + CT1 + CT2 + (HY% × 0.10)
+    </div>
+    <div class="small" style="margin-top:10px">
+      Physics, Chemistry, Biology, Higher Math and ICT use Written /75 + Practical /25 before scaling to 60%. Bangla and English use written /100 with no practical. Practical subjects also have a separate practical for each paper.
+      ICT: no 1st paper, so its calculated one-paper result is the final result.
+    </div>
+  </div>
+
+  <section class="topgrid">
+    <div class="card yellow">
+      <div class="sticker">SOURCE OF TRUTH</div>
+      <div class="eyebrow">Default half-yearly</div>
+      <div class="big"><input class="inline-input" id="defaultHY" type="number" value="36" min="0" max="100" step="0.1">%</div>
+      <div class="small">Override it per subject only if that subject had a different half-yearly score.</div>
+    </div>
+    <div class="card blue">
+      <div class="eyebrow">Weighting</div>
+      <div class="big">60 / 30 / 10</div>
+      <div class="small">2nd-paper exam: Bangla/English written /100. Physics/Chemistry/Biology/Higher Math/ICT use written /75 + practical /25. That exam total is scaled to 60%. CTs contribute 30%; HY contributes 10%.</div>
+    </div>
+    <div class="card green">
+      <div class="eyebrow">Mood policy</div>
+      <div class="big" style="font-size:43px">Numbers first.</div>
+      <div class="small">The “cooked” label only turns final when the target is mathematically impossible. ICT is calculated as a one-paper subject.</div>
+    </div>
+  </section>
+
+
+
+  <section class="agenda-shell" id="agendaShell">
+    <button type="button" class="agenda-toggle" onclick="toggleAgenda()">
+      <div class="agenda-toggle-main">
+        <div class="eyebrow">Schedule</div>
+        <div class="agenda-toggle-title">What’s coming up?</div>
+        <div class="agenda-toggle-sub">Click for more details.</div>
+      </div>
+      <div class="agenda-toggle-side">
+        <div class="agenda-toggle-next" id="agendaNextTiny">Loading…</div>
+        <div class="agenda-toggle-chev">⌄</div>
+      </div>
+    </button>
+
+    <div class="agenda-details">
+      <div class="agenda-summary" id="agendaSummary"></div>
+
+      <form class="exam-form" id="examForm" onsubmit="submitSchedule(event)">
+        <input type="hidden" id="scheduleEditId" value="">
+        <div class="exam-field">
+          <label for="scheduleDate">Date</label>
+          <input type="date" id="scheduleDate" required oninput="syncScheduleDay()">
+        </div>
+        <div class="exam-field">
+          <label for="scheduleDay">Day</label>
+          <input id="scheduleDay" readonly placeholder="Auto">
+        </div>
+        <div class="exam-field">
+          <label for="scheduleType">Type</label>
+          <select id="scheduleType">
+            <option value="Exam">Exam</option>
+            <option value="Homework">Homework</option>
+            <option value="Deadline">Deadline</option>
+            <option value="Study target">Study target</option>
+          </select>
+        </div>
+        <div class="exam-field">
+          <label for="scheduleSubject">Subject</label>
+          <input id="scheduleSubject" required placeholder="Physics 2nd Paper">
+        </div>
+        <div class="exam-field">
+          <label for="scheduleSyllabus">Syllabus / task</label>
+          <input id="scheduleSyllabus" required placeholder="Chapter 3 — Current Electricity">
+        </div>
+        <button class="primary exam-add" id="scheduleSubmit" type="submit">+ Add</button>
+      </form>
+
+      <div class="day-agenda" id="scheduleList"></div>
+
+      <div class="routine-wrap" id="routineWrap">
+        <button type="button" class="routine-toggle" onclick="toggleRoutine()">
+          <div>
+            <span>Study plan</span>
+            <strong>Routine</strong>
+          </div>
+          <span id="routineToggleText">Click to expand</span>
+        </button>
+        <div class="routine-body">
+          <div class="routine-grid" id="routineGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<div class="section-head">
+    <h2>The grade desk</h2>
+    <p>Marks save automatically in this browser.</p>
+  </div>
+
+  <main id="subjects" class="subjects"></main>
+
+  <div class="actions">
+    <button class="primary" onclick="addSubject()">+ Add subject</button>
+    <button onclick="copySummary()">Copy summary for ChatGPT</button>
+    <button onclick="exportData()">Export backup</button>
+    <button onclick="importData()">Import backup</button>
+    <button class="red" onclick="resetData()">Reset everything</button>
+  </div>
+
+
+  <section class="overall" id="overallAcademics">
+    <div>
+      <div class="eyebrow">Entire academics</div>
+      <h2 class="overall-title">Overall academic average</h2>
+      <div class="overall-value" id="overallAverage">—</div>
+      <div class="overall-meta" id="overallNote">
+        Enter completed subject results to build your overall academic average.
+      </div>
+    </div>
+    <div class="overall-stats">
+      <div class="overall-stat">
+        <div class="lab">Completed subjects</div>
+        <div class="val" id="completedCount">0/0</div>
+      </div>
+      <div class="overall-stat">
+        <div class="lab">Maximum possible overall</div>
+        <div class="val" id="overallMax">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="editorial-note">
+    <div class="pullquote">“Cooked” is a mathematical conclusion, not a post-exam feeling.</div>
+    <div class="bodycopy">
+      <strong>Reading the meter:</strong> Chilling means your 85% target has comfortable room. Needs work means it is alive, but future scores matter. Danger means the target is possible only with very strong remaining results. Mathematically cooked appears only when even perfect future marks cannot reach the target.
+      <br><br>
+      For unknown future marks, the site assumes the maximum is still available when calculating your ceiling. Bangla and English test fields use /100; every other subject uses /75. It never treats an unreported mark as zero. For ICT, there is no 1st-paper half: its one-paper result is the final subject result.
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Marks Journal / local private edition</span>
+    <span id="saveState">Saved locally</span>
+  </footer>
+
+</div>
+
+<script src="/memory.js"></script>
+<script>
+(async()=>{
+const remote = await window.memoryStore.open();
+const KEY="cookedMarksJournal_v7_practicals";
+const LEGACY_KEY="cookedMarksJournal_v4_corrected";
+
+const starter = {
+  target:85,
+  defaultHY:36,
+  rows:[
+    {subject:"Bangla",hy:"",ca1:"8.5",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"ICT",hy:"",ca1:"12",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"Physics",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"Chemistry",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"Higher Math",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"Biology",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"},
+    {subject:"English",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"}
+  ]
+};
+
+const DEFAULT_ROUTINE=[{"date":"2026-10-30","blocks":[{"subject":"Higher Math 2nd","task":"Chapter 5 — begin/continue Binomial homework","note":"Priority because homework is due Nov 1."},{"subject":"Physics 2nd","task":"Start Chapter 3 — Current Electricity","note":"Main exam-prep block."},{"subject":"Biology 2nd","task":"Chapter 5 — one atomic lesson only","note":"Keep Bio small and consistent, not marathon-style."}]},{"date":"2026-10-31","blocks":[{"subject":"Higher Math 2nd","task":"Finish enough of Chapter 5 homework to submit cleanly","note":"Do not over-polish."},{"subject":"Physics 2nd","task":"Continue Chapter 3","note":"Aim to have the conceptual core closed."},{"subject":"Biology 2nd","task":"Chapter 5 — breathing mechanism","note":"Diagram + recall."}]},{"date":"2026-11-01","blocks":[{"subject":"Higher Math 2nd","task":"Submit Chapter 5 homework","note":"Counts as syllabus progress."},{"subject":"English 1st","task":"Take the exam; no dedicated prep","note":"Low pressure by your choice."},{"subject":"Physics 2nd","task":"Finish Chapter 3 concepts","note":"Move toward question-solving."}]},{"date":"2026-11-02","blocks":[{"subject":"Physics 2nd","task":"Chapter 3 question-solving + exam patching","note":"Final focused prep before the Nov 3 exam."},{"subject":"Chemistry 2nd","task":"Start Chapter 3 — equations, stoichiometric mass/volume, limiting reagent","note":"This becomes the next major block."}]},{"date":"2026-11-03","blocks":[{"subject":"Physics 2nd","task":"School exam — Chapter 3","note":"After the exam, close the chapter unless a real weakness appears."},{"subject":"Chemistry 2nd","task":"Chapter 3 — concentration, dilution and titration","note":"Main post-exam block."}]},{"date":"2026-11-04","blocks":[{"subject":"Chemistry 2nd","task":"Chapter 3 — redox, oxidation number, half-reaction method","note":"Main study block."},{"subject":"Biology 2nd","task":"Continue Chapter 5","note":"Short controlled block."}]},{"date":"2026-11-05","blocks":[{"subject":"Chemistry 2nd","task":"School exam — Chapter 3","note":"Do not spend the evening post-morteming it."},{"subject":"Physics 2nd","task":"Start Chapter 4 — Magnetism","note":"Preserves your two-chapter/week Physics pace."},{"subject":"Biology 2nd","task":"Finish Chapter 5 if still open","note":"Close the exam chapter."}]},{"date":"2026-11-06","blocks":[{"subject":"Physics 2nd","task":"Push Chapter 4 toward completion","note":"Main Physics block."},{"subject":"Higher Math 2nd","task":"Chapter 2 — Linear Programming","note":"Quick priority chapter after HM5 homework."},{"subject":"Biology 2nd","task":"Finish Chapter 1; begin Hydra if moving well","note":"Checkpoint: Bio5 + Bio1 + start Bio2."}]}];
+const DEFAULT_SCHEDULE=[{"id":"evt-hm-hw-1101","date":"2026-11-01","type":"Homework","subject":"Higher Math 2nd Paper","syllabus":"Chapter 5 \u2014 Binomial Expressions homework","done":false},{"id":"evt-eng-1101","date":"2026-11-01","type":"Exam","subject":"English 1st Paper","syllabus":"School exam \u2014 low pressure / no dedicated prep planned","done":false},{"id":"evt-phy-1103","date":"2026-11-03","type":"Exam","subject":"Physics 2nd Paper","syllabus":"Chapter 3 \u2014 Current Electricity","done":false},{"id":"evt-chem-1105","date":"2026-11-05","type":"Exam","subject":"Chemistry 2nd Paper","syllabus":"Chapter 3 \u2014 Stoichiometric Chemistry","done":false},{"id":"evt-bio-1110","date":"2026-11-10","type":"Exam","subject":"Biology 2nd Paper","syllabus":"Chapter 5 \u2014 Respiration and Breathing","done":false},{"id":"evt-hm-1112","date":"2026-11-12","type":"Exam","subject":"Higher Math 2nd Paper","syllabus":"Chapter 5 \u2014 Binomial Expressions","done":false},{"id":"evt-priority-1123","date":"2026-11-23","type":"Deadline","subject":"All 2nd Papers","syllabus":"Finish the entire red priority syllabus","done":false}];
+
+function load(){
+  try{
+    const v=remote || localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY);
+    return v?JSON.parse(v):structuredClone(starter);
+  }catch(e){
+    return structuredClone(starter);
+  }
+}
+const SYLLABUS_LIBRARY={"Physics":{"1st Paper":[{"chapter":1,"name":"Physical World and Measurement","priority":false,"lessons":[{"id":"HSC-PHY1-01-01","name":"Nature/scope/contributions of physics; physical-world concepts; quantities/units, dimensions, notation, and correct procedure for writing symbols, units and magnitudes","hours":0.75,"priority":false},{"id":"HSC-PHY1-01-02","name":"Measurement principles, observation/experiment, errors, accurate values, significant figures; measuring instruments including slide calipers, screw gauge and spherometer","hours":1.0,"priority":false}]},{"chapter":2,"name":"Vector","priority":true,"lessons":[{"id":"HSC-PHY1-02-01","name":"Scalars/vectors, representation, addition/subtraction and resolution","hours":1.5,"priority":true},{"id":"HSC-PHY1-02-02","name":"3D components, unit vectors and vector algebra","hours":0.5,"priority":true},{"id":"HSC-PHY1-02-03","name":"Dot product and applications","hours":1.0,"priority":true},{"id":"HSC-PHY1-02-04","name":"Cross product and introductory vector calculus","hours":1.5,"priority":true}]},{"chapter":3,"name":"Dynamics","priority":true,"lessons":[{"id":"HSC-PHY1-03-01","name":"Frames of reference, relative motion and kinematic quantities","hours":1.5,"priority":true},{"id":"HSC-PHY1-03-02","name":"Position-time/velocity-time graphs and calculus interpretation","hours":1.5,"priority":true},{"id":"HSC-PHY1-03-03","name":"Equations of motion and falling bodies","hours":0.5,"priority":true},{"id":"HSC-PHY1-03-04","name":"Projectile motion","hours":1.0,"priority":true},{"id":"HSC-PHY1-03-05","name":"Circular motion and centripetal acceleration","hours":1.0,"priority":true}]},{"chapter":4,"name":"Newtonian Mechanics","priority":true,"lessons":[{"id":"HSC-PHY1-04-01","name":"Intuitive concept of force, fundamental forces, Newton's laws, linear momentum and conservation of momentum","hours":1.5,"priority":true},{"id":"HSC-PHY1-04-02","name":"Applications/limitations of Newton's laws; force, field and intensity and their distinctions","hours":1.0,"priority":true},{"id":"HSC-PHY1-04-03","name":"Rotational motion, moment of inertia and its theorems","hours":1.5,"priority":true},{"id":"HSC-PHY1-04-04","name":"Angular momentum, torque, angular acceleration, Newton's laws in rotational form and conservation of angular momentum","hours":1.5,"priority":true},{"id":"HSC-PHY1-04-05","name":"Centripetal/centrifugal force, banking/turning and collision","hours":1.0,"priority":true},{"id":"HSC-PHY1-04-06","name":"Friction: static/limiting/kinetic/rolling/fluid; applications plus advantages and disadvantages of friction","hours":1.5,"priority":true}]},{"chapter":5,"name":"Work, Energy and Power","priority":true,"lessons":[{"id":"HSC-PHY1-05-01","name":"Work by constant/variable/elastic/gravitational forces; direct comparison of work done against elastic force versus gravity","hours":1.25,"priority":true},{"id":"HSC-PHY1-05-02","name":"Kinetic/potential energy, conservative forces and conservation of energy","hours":1.25,"priority":true},{"id":"HSC-PHY1-05-03","name":"Power and efficiency + mixed problems","hours":1.0,"priority":true}]},{"chapter":6,"name":"Gravitation and Gravity","priority":true,"lessons":[{"id":"HSC-PHY1-06-01","name":"Newton gravitation, Kepler laws and derivation of Kepler relation from Newtonian gravitation","hours":1.25,"priority":true},{"id":"HSC-PHY1-06-02","name":"g, variation of g, centre of gravity and gravitational field","hours":1.0,"priority":true},{"id":"HSC-PHY1-06-03","name":"Applications: escape velocity and mixed gravitation problems","hours":1.25,"priority":true}]},{"chapter":7,"name":"Structural Properties of Matter","priority":false,"lessons":[{"id":"HSC-PHY1-07-01","name":"Intermolecular forces, states/bonds, stress/strain and Hooke's law","hours":1.0,"priority":false},{"id":"HSC-PHY1-07-02","name":"Elastic moduli, Poisson ratio, stress-strain curve; explain why steel is more elastic than rubber","hours":0.75,"priority":false},{"id":"HSC-PHY1-07-03","name":"Fluid flow, viscosity, coefficient of viscosity, Stokes law, terminal velocity and comparative/illustrative viscosity phenomena","hours":1.0,"priority":false},{"id":"HSC-PHY1-07-04","name":"Surface tension, surface energy, contact angle and phenomena","hours":0.75,"priority":false}]},{"chapter":8,"name":"Periodic Motion","priority":true,"lessons":[{"id":"HSC-PHY1-08-01","name":"Periodicity and SHM equation/solution","hours":1.25,"priority":true},{"id":"HSC-PHY1-08-02","name":"SHM quantities, phase and energy","hours":1.25,"priority":true},{"id":"HSC-PHY1-08-03","name":"Spring and simple pendulum","hours":1.0,"priority":true},{"id":"HSC-PHY1-08-04","name":"SHM-circular-motion relation and applications","hours":1.0,"priority":true}]},{"chapter":9,"name":"Wave","priority":false,"lessons":[{"id":"HSC-PHY1-09-01","name":"Wave production, terms, velocity-frequency-wavelength and wave types","hours":0.5,"priority":false},{"id":"HSC-PHY1-09-02","name":"Progressive/stationary waves, superposition, free/forced vibration and resonance","hours":1.25,"priority":false},{"id":"HSC-PHY1-09-03","name":"Intensity/intensity level, beats and applications","hours":1.0,"priority":false},{"id":"HSC-PHY1-09-04","name":"Musical sound, harmonics/scales; physics contribution to musical quality; noise versus musical quality and environmental/health influences","hours":1.0,"priority":false},{"id":"HSC-PHY1-09-05","name":"Stretched strings and air-column vibration in open/closed pipes","hours":1.25,"priority":false}]},{"chapter":10,"name":"Ideal Gas and Kinetic Theory of Gas","priority":false,"lessons":[{"id":"HSC-PHY1-10-01","name":"Ideal gas laws, STP, equation of state and density","hours":1.0,"priority":false},{"id":"HSC-PHY1-10-02","name":"Kinetic theory, molecular speeds and gas expressions","hours":1.25,"priority":false},{"id":"HSC-PHY1-10-03","name":"Mean free path, degrees of freedom and equipartition","hours":1.0,"priority":false},{"id":"HSC-PHY1-10-04","name":"Saturated/unsaturated vapour, vapour pressure vs air pressure, humidity, hygrometers and related phenomena","hours":1.25,"priority":false}]}],"2nd Paper":[{"chapter":1,"name":"Thermodynamics","priority":true,"lessons":[{"id":"HSC-PHY2-01-01","name":"Temperature scales, thermal equilibrium and fixed points","hours":1.0,"priority":true},{"id":"HSC-PHY2-01-02","name":"First law and isothermal/adiabatic/isochoric/isobaric processes","hours":1.5,"priority":true},{"id":"HSC-PHY2-01-03","name":"Cp/Cv, gamma and process curves/internal energy","hours":1.0,"priority":true},{"id":"HSC-PHY2-01-04","name":"Second law, Clausius/Kelvin/Planck/Carnot statements, reversibility, entropy, disorder and heat death of the Earth","hours":1.5,"priority":true},{"id":"HSC-PHY2-01-05","name":"Carnot cycle, heat engines and refrigerators/COP","hours":1.5,"priority":true}]},{"chapter":2,"name":"Electrostatics","priority":true,"lessons":[{"id":"HSC-PHY2-02-01","name":"Charge, Coulomb law, electric field and superposition; compare electrostatic force with gravitational force","hours":1.25,"priority":true},{"id":"HSC-PHY2-02-02","name":"Potential, equipotential surfaces and field-potential relation","hours":1.0,"priority":true},{"id":"HSC-PHY2-02-03","name":"Electric dipole: torque, work, potential and field","hours":1.0,"priority":true},{"id":"HSC-PHY2-02-04","name":"Dielectrics and capacitance; spherical/parallel-plate capacitors","hours":1.25,"priority":true},{"id":"HSC-PHY2-02-05","name":"Capacitor combinations/energy plus Gauss law: sphere, long cylinder, plane conductor, parallel plates, Coulomb derivation/limitations","hours":1.25,"priority":true}]},{"chapter":3,"name":"Current Electricity","priority":true,"lessons":[{"id":"HSC-PHY2-03-01","name":"Current, drift velocity, resistance/resistivity, temperature effects, causes of conductor heating and Joule heating","hours":1.5,"priority":true},{"id":"HSC-PHY2-03-02","name":"Ohm law, electrical power/energy, transmission loss, fuse and mechanical equivalent of heat","hours":1.0,"priority":true},{"id":"HSC-PHY2-03-03","name":"Cells: emf/internal resistance and series/parallel combinations","hours":1.0,"priority":true},{"id":"HSC-PHY2-03-04","name":"Kirchhoff laws and circuit applications","hours":1.5,"priority":true},{"id":"HSC-PHY2-03-05","name":"Wheatstone/metre bridge, potentiometer (including EMF comparison), specific-resistance measurement and post-office box","hours":1.5,"priority":true}]},{"chapter":4,"name":"Magnetic Effects of Current and Magnetism","priority":true,"lessons":[{"id":"HSC-PHY2-04-01","name":"Magnetic field, Oersted/Biot-Savart/Ampere laws","hours":1.25,"priority":true},{"id":"HSC-PHY2-04-02","name":"Force on charges/wires, Lorentz force and parallel-current forces","hours":1.25,"priority":true},{"id":"HSC-PHY2-04-03","name":"Hall effect and torque on current-carrying coil","hours":1.0,"priority":true},{"id":"HSC-PHY2-04-04","name":"Moving electron/orbital-spin magnetism plus terrestrial magnetism: declination, dip and field components","hours":1.0,"priority":true},{"id":"HSC-PHY2-04-05","name":"Para/dia/ferro/anti-ferro/ferrimagnetism, domains, hysteresis, temporary/permanent magnets, material selection and electromagnet/dynamo uses","hours":1.25,"priority":true}]},{"chapter":5,"name":"Electromagnetic Induction and Alternating Current","priority":false,"lessons":[{"id":"HSC-PHY2-05-01","name":"Flux, Faraday/Lenz laws and induced emf","hours":1.25,"priority":false},{"id":"HSC-PHY2-05-02","name":"Self/mutual inductance, non-inductive coil and energy stored in an inductor","hours":1.25,"priority":false},{"id":"HSC-PHY2-05-03","name":"AC generation and AC quantities","hours":1.25,"priority":false},{"id":"HSC-PHY2-05-04","name":"Mean/RMS/peak relations and mixed applications","hours":1.0,"priority":false}]},{"chapter":6,"name":"Geometrical Optics","priority":false,"lessons":[{"id":"HSC-PHY2-06-01","name":"Fermat principle, reflection/refraction, TIR, optical fibre and prism periscope","hours":1.25,"priority":false},{"id":"HSC-PHY2-06-02","name":"Spherical refraction, lens maker and lens equations","hours":1.25,"priority":false},{"id":"HSC-PHY2-06-03","name":"Image formation/magnification; focal length/power; refractive-index-of-liquid and focal-length experimental methods","hours":1.25,"priority":false},{"id":"HSC-PHY2-06-04","name":"Microscopes/telescopes and resolving power; compare astronomical and reflecting telescopes, including characteristics, advantages and disadvantages","hours":1.25,"priority":false},{"id":"HSC-PHY2-06-05","name":"Prisms: deviation/minimum deviation, dispersion and spectrum; Rayleigh scattering law and applications","hours":1.0,"priority":false}]},{"chapter":7,"name":"Physical Optics","priority":true,"lessons":[{"id":"HSC-PHY2-07-01","name":"Electromagnetic waves, electromagnetic theory, Poynting vector, light-year, visible/electromagnetic spectra, Huygens principle and wavefronts","hours":0.75,"priority":true},{"id":"HSC-PHY2-07-02","name":"Interference and Young double-slit experiment/fringe width","hours":1.25,"priority":true},{"id":"HSC-PHY2-07-03","name":"Diffraction: Fresnel versus Fraunhofer classes, single slit, grating and comparison with interference","hours":1.25,"priority":true},{"id":"HSC-PHY2-07-04","name":"Polarisation: Tourmaline crystal experiment, polarisation by reflection and related terms","hours":1.25,"priority":true}]},{"chapter":8,"name":"Introduction to Modern Physics","priority":true,"lessons":[{"id":"HSC-PHY2-08-01","name":"Modern-physics frame background, Michelson-Morley, relativity postulates; fundamental forces, comparison of their intensities and unified-field context","hours":1.25,"priority":true},{"id":"HSC-PHY2-08-02","name":"Galilean, Lorentz and inverse-Lorentz transformations; time dilation, length contraction and mass-energy relation","hours":1.25,"priority":true},{"id":"HSC-PHY2-08-03","name":"Planck/black-body and photoelectric effect; compare X-rays with visible light; Einstein equation; photocurrent-vs-potential and frequency-vs-threshold-potential curves; applications","hours":1.25,"priority":true},{"id":"HSC-PHY2-08-04","name":"de Broglie, Compton and uncertainty principle","hours":1.0,"priority":true}]},{"chapter":9,"name":"Atomic Model and Nuclear Physics","priority":true,"lessons":[{"id":"HSC-PHY2-09-01","name":"Atomic models: Thomson/Rutherford/Bohr; Bohr postulates and equations for hydrogen-atom radius and energy levels","hours":1.25,"priority":true},{"id":"HSC-PHY2-09-02","name":"Nucleus, nuclear force and radioactivity; units of radioactivity; alpha/beta/gamma radiations and properties","hours":1.25,"priority":true},{"id":"HSC-PHY2-09-03","name":"Radioactive decay law, decay constant, half-life/mean-life/activity, displacement laws and conservation of mass number and atomic number","hours":1.25,"priority":true},{"id":"HSC-PHY2-09-04","name":"Mass defect/binding energy, fission/fusion and nuclear reactions","hours":1.0,"priority":true}]},{"chapter":10,"name":"Semiconductor and Electronics","priority":false,"lessons":[{"id":"HSC-PHY2-10-01","name":"Band theory, intrinsic/extrinsic semiconductors and p/n types","hours":1.25,"priority":false},{"id":"HSC-PHY2-10-02","name":"Junction diode, V-I curve, rectification; experimental full-wave and bridge-rectification setups","hours":1.25,"priority":false},{"id":"HSC-PHY2-10-03","name":"Transistors, configurations, characteristic graphs, amplification/switching, current/voltage/power gain and input/output resistance","hours":1.25,"priority":false},{"id":"HSC-PHY2-10-04","name":"Decimal/binary conversion, binary arithmetic, Boolean algebra and OR/NOT/AND/NOR/NAND/XOR/XNOR logic gates","hours":1.0,"priority":false}]},{"chapter":11,"name":"Astronomy","priority":false,"lessons":[{"id":"HSC-PHY2-11-01","name":"Universe models (closed/open/flat), principal matter/events, solar system, stars, galaxies, fundamental particles, Sun energy, stellar evolution, neutron stars and black holes","hours":0.75,"priority":false},{"id":"HSC-PHY2-11-02","name":"Observational instruments: radio/optical/gamma/X-ray telescopes and satellites","hours":1.0,"priority":false}]}]},"Chemistry":{"1st Paper":[{"chapter":1,"name":"Safe Use of Laboratory","priority":false,"lessons":[{"id":"HSC-CHEM1-01-01","name":"Laboratory rules/PPE; Paul Bunge and 2-digit/4-digit digital balances; conical flask/wash bottle/burette/pipette use; Bunsen/spirit-lamp flame and heating; reagent bottles, chemical storage and safer reagent alternatives","hours":0.5,"priority":false},{"id":"HSC-CHEM1-01-02","name":"Micro/semi-micro analysis and apparatus; waste minimisation/disposal; laboratory safety equipment, flammables and primary first-aid procedures","hours":1.0,"priority":false}]},{"chapter":2,"name":"Qualitative Chemistry","priority":true,"lessons":[{"id":"HSC-CHEM1-02-01","name":"Rutherford/Bohr/wave-mechanical atomic models; Schrödinger wave-equation concept; four quantum numbers and their significance; atomic/mass number, relative atomic/molecular mass and p/e/n relations","hours":3.0,"priority":true},{"id":"HSC-CHEM1-02-02","name":"Electron configuration, orbitals, Aufbau/Hund/Pauli and first 30 elements","hours":2.25,"priority":true},{"id":"HSC-CHEM1-02-03","name":"Electromagnetic/atomic spectra; Planck/Bohr; UV counterfeit detection, radioisotope uses, NMR principle and flame tests","hours":1.5,"priority":true},{"id":"HSC-CHEM1-02-04","name":"Solubility product, common-ion effect and precipitation of ions","hours":2.25,"priority":true},{"id":"HSC-CHEM1-02-05","name":"Qualitative ion detection/reagents and pure NaCl preparation","hours":1.5,"priority":true},{"id":"HSC-CHEM1-02-06","name":"Separation/purification: simple, fractional, azeotropic, steam and vacuum distillation; sublimation, solvent extraction; column and paper chromatography practicals","hours":2.25,"priority":true}]},{"chapter":3,"name":"Periodic Properties and Bonding in Elements","priority":true,"lessons":[{"id":"HSC-CHEM1-03-01","name":"Periodic table from electronic configuration; s/p/d/f block properties","hours":3.0,"priority":true},{"id":"HSC-CHEM1-03-02","name":"Periodic trends: size, ionisation energy, electron affinity, electronegativity","hours":2.25,"priority":true},{"id":"HSC-CHEM1-03-03","name":"Second- versus third-period oxide trends, oxidation states and periodic trends in bonding","hours":1.5,"priority":true},{"id":"HSC-CHEM1-03-04","name":"Orbital overlap, VBT, sigma/pi bonds and hybridisation","hours":2.25,"priority":true},{"id":"HSC-CHEM1-03-05","name":"VSEPR, coordination bonds/compounds, molecular shape, and formula/naming of transition-metal complexes","hours":1.5,"priority":true},{"id":"HSC-CHEM1-03-06","name":"Fajans rule, ionic potential, diagonal relationships, dipoles/intermolecular forces; compare H2O versus H2S bonding and hydrogen bonding","hours":2.25,"priority":true}]},{"chapter":4,"name":"Chemical Changes","priority":true,"lessons":[{"id":"HSC-CHEM1-04-01","name":"Reaction classification, green chemistry and kinetics/rate law","hours":3.0,"priority":true},{"id":"HSC-CHEM1-04-02","name":"Collision/transition-state theories; catalyst mechanism, promoters, catalyst poisons, enzymes and biocatalysts","hours":1.5,"priority":true},{"id":"HSC-CHEM1-04-03","name":"Equilibrium, Le Chatelier and industrial applications","hours":2.25,"priority":true},{"id":"HSC-CHEM1-04-04","name":"Law of mass action; derive/use Kp, Kc and Kx and relations among equilibrium constants","hours":2.25,"priority":true},{"id":"HSC-CHEM1-04-05","name":"Water auto-ionisation, Ostwald dilution, acid-base equilibria, Ka/Kb, pH, buffers; prepare carbonate buffer and test buffer action","hours":2.25,"priority":true},{"id":"HSC-CHEM1-04-06","name":"Thermochemistry: neutralisation energy, enthalpy, bond energy, standard heat of formation, Hess/Lavoisier-Laplace; calorimetric heat of solution of oxalic acid","hours":3.75,"priority":true}]},{"chapter":5,"name":"Vocational Chemistry","priority":false,"lessons":[{"id":"HSC-CHEM1-05-01","name":"Food safety/preservation/canning; browning prevention, suspension/coagulation; cheese, butter and ghee preparation chemistry","hours":2.0,"priority":false},{"id":"HSC-CHEM1-05-02","name":"Toiletry/perfumery preparations: talc, hair oil, cold cream, vanishing/snow cream, aftershave, shampoo/anti-dandruff and cleaners; acetic acid extraction and malt-vinegar production","hours":2.75,"priority":false}]}],"2nd Paper":[{"chapter":1,"name":"Environmental Chemistry","priority":true,"lessons":[{"id":"HSC-CHEM2-01-01","name":"Atmosphere structure/composition, cyclones and storm surges; gas-law units; Boyle/Charles/Avogadro/combined gas laws, ideal gas equation, Dalton partial pressure and gas-law demonstrations","hours":2.75,"priority":true},{"id":"HSC-CHEM2-01-02","name":"Kinetic molecular theory, molecular speeds/kinetic energy, Graham diffusion/effusion; ideal vs real gases; Amagat experiment, compressibility factor Z, van der Waals equation and cylinder use","hours":2.0,"priority":true},{"id":"HSC-CHEM2-01-03","name":"Lightning and nitrogen fixation in soil; industrial gaseous pollutants, air pollution, greenhouse effect, ozone depletion and acid rain/prevention","hours":1.5,"priority":true},{"id":"HSC-CHEM2-01-04","name":"Acid-base theories; soft-water sources/criteria; water quality/pollution, arsenic/chromium/lead/cadmium contamination including food-chain transfer; solution types and pollutant-mixing mechanisms","hours":2.0,"priority":true}]},{"chapter":2,"name":"Organic Chemistry","priority":true,"lessons":[{"id":"HSC-CHEM2-02-01","name":"Vital-force theory; why carbon forms organic compounds; organic-versus-inorganic differences; classification, bonding, hybridisation, tetravalency, homologous series and functional groups","hours":3.75,"priority":true},{"id":"HSC-CHEM2-02-02","name":"IUPAC naming of major organic classes","hours":3.0,"priority":true},{"id":"HSC-CHEM2-02-03","name":"Isomerism: structural/geometrical/optical, chiral centres, optical activity and calculation of structural-isomer counts from molecular formulas","hours":3.0,"priority":true},{"id":"HSC-CHEM2-02-04","name":"Aromatic chemistry: benzene/toluene preparation and structure, aromaticity, multiple substitution and orientation rules for disubstituted benzene","hours":2.25,"priority":true},{"id":"HSC-CHEM2-02-05","name":"Reaction types + preparation/reactions of hydrocarbons and halo compounds","hours":2.25,"priority":true},{"id":"HSC-CHEM2-02-06","name":"Alcohols/ethers/amines/carbonyls/carboxylic acids/esters/amides + functional-group tests","hours":2.25,"priority":true},{"id":"HSC-CHEM2-02-07","name":"IR bands; glycerine, phenol, nitroglycerin, TNT, Dettol and paracetamol; polymers; glycosidic versus peptide bonds; everyday applications and environmental/social impacts including polythene/formalin","hours":2.25,"priority":true}]},{"chapter":3,"name":"Stoichiometric Chemistry","priority":true,"lessons":[{"id":"HSC-CHEM2-03-01","name":"Balanced/ionic equations, Gay-Lussac law, gaseous molar volume and stoichiometric mass-volume calculations","hours":3.0,"priority":true},{"id":"HSC-CHEM2-03-02","name":"Limiting reagent and gas-product calculations","hours":3.0,"priority":true},{"id":"HSC-CHEM2-03-03","name":"Solution concentration: molarity, %, ppm and dilution","hours":2.25,"priority":true},{"id":"HSC-CHEM2-03-04","name":"Acid-base neutralisation/titration, endpoints, indicators and plant-juice endpoint demonstration","hours":2.25,"priority":true},{"id":"HSC-CHEM2-03-05","name":"Redox, oxidation numbers/half-reactions, metal-ion redox titration, iodimetry/iodometry; Beer-Lambert law, AAS, UV-Vis, HPLC and gas chromatography","hours":2.25,"priority":true}]},{"chapter":4,"name":"Electrochemistry","priority":false,"lessons":[{"id":"HSC-CHEM2-04-01","name":"Electrolytic conductance/conductivity, equivalent conductance, cell constant, concentration effects and solution-comparison practical","hours":2.75,"priority":false},{"id":"HSC-CHEM2-04-02","name":"Electrolysis, Faraday laws and electrode reactions","hours":2.0,"priority":false},{"id":"HSC-CHEM2-04-03","name":"Reactivity series, electrode potential, cell notation and spontaneity","hours":2.0,"priority":false},{"id":"HSC-CHEM2-04-04","name":"Nernst equation, galvanic/electrolytic cells and EMF","hours":2.0,"priority":false},{"id":"HSC-CHEM2-04-05","name":"Lead-storage versus lithium batteries; fuel cells including hydrogen/PEM fuel cells, anode/cathode/fuel mechanisms and advantages; pH-meter application","hours":1.25,"priority":false}]},{"chapter":5,"name":"Economic Chemistry","priority":false,"lessons":[{"id":"HSC-CHEM2-05-01","name":"Bangladesh natural-gas fields and coalfields; composition, quality and uses of gas/coal; fuel-resource industrial possibilities and major chemical industries","hours":0.5,"priority":false},{"id":"HSC-CHEM2-05-02","name":"Urea/glass/ceramic/pulp-paper/cement/leather processes; industrial pollutants, air-pollution control and ETP operating principles; brickfield report and coal-power pros/cons","hours":1.0,"priority":false},{"id":"HSC-CHEM2-05-03","name":"Recycling and environmental significance","hours":1.0,"priority":false},{"id":"HSC-CHEM2-05-04","name":"Nanoparticles/nanotechnology and industrial uses","hours":1.0,"priority":false}]}]},"Biology":{"1st Paper":[{"chapter":1,"name":"Cell and Its Structure","priority":true,"lessons":[{"id":"HSC-BIO1-01-01","name":"Cell ultrastructure: cell wall, plasma membrane, cytoplasm and organelles","hours":2.0,"priority":true},{"id":"HSC-BIO1-01-02","name":"Nucleus, chromosome structure/types and roles of chromosome types in cell division","hours":1.0,"priority":true},{"id":"HSC-BIO1-01-03","name":"DNA as genetic material and DNA replication","hours":1.5,"priority":true},{"id":"HSC-BIO1-01-04","name":"Central dogma/flow of biological information; transcription, translation, genes, genetic code and codon details","hours":1.5,"priority":true}]},{"chapter":2,"name":"Cell Division","priority":true,"lessons":[{"id":"HSC-BIO1-02-01","name":"Types of cell division, mitosis phases/importance; observe stages of mitosis on a permanent slide","hours":1.25,"priority":true},{"id":"HSC-BIO1-02-02","name":"Meiosis I/II, importance and mitosis-vs-meiosis comparison","hours":1.25,"priority":true}]},{"chapter":3,"name":"Cell Chemistry","priority":false,"lessons":[{"id":"HSC-BIO1-03-01","name":"Carbohydrates: mono-, oligo- and polysaccharides","hours":0.25,"priority":false},{"id":"HSC-BIO1-03-02","name":"Proteins, lipids/fats and their biological roles","hours":0.75,"priority":false},{"id":"HSC-BIO1-03-03","name":"Enzymes and mechanism of enzyme action","hours":1.0,"priority":false}]},{"chapter":4,"name":"Microorganisms","priority":false,"lessons":[{"id":"HSC-BIO1-04-01","name":"Viruses: structure, characteristics, bacteriophage/T2 and importance","hours":1.25,"priority":false},{"id":"HSC-BIO1-04-02","name":"Viral diseases: papaya ringspot/mosaic, hepatitis and dengue","hours":1.0,"priority":false},{"id":"HSC-BIO1-04-03","name":"Bacteria: characteristics, classification and structure","hours":1.25,"priority":false}]},{"chapter":5,"name":"Algae and Fungi","priority":false,"lessons":[{"id":"HSC-BIO1-05-01","name":"Bacteria importance/disease/reproduction + rice blight/cholera; prepare and observe bacteria using a simple whole mount","hours":0.75,"priority":false},{"id":"HSC-BIO1-05-02","name":"Plasmodium/malaria and algae: Ulothrix structure/reproduction; observe Ulothrix from a permanent slide","hours":0.75,"priority":false},{"id":"HSC-BIO1-05-03","name":"Fungi: characteristics/reproduction/Agaricus + late blight/ringworm/lichens; observe Agaricus fruiting body","hours":1.0,"priority":false}]},{"chapter":6,"name":"Bryophyta and Pteridophyta","priority":true,"lessons":[{"id":"HSC-BIO1-06-01","name":"Bryophyta and Riccia structure/reproduction","hours":1.0,"priority":true},{"id":"HSC-BIO1-06-02","name":"Pteridophyta and Pteris gametophyte/sporophyte; observe the sporophytic stage of Pteris","hours":1.25,"priority":true}]},{"chapter":7,"name":"Gymnosperms and Angiosperms","priority":false,"lessons":[{"id":"HSC-BIO1-07-01","name":"Gymnosperms and Cycas reproduction","hours":1.25,"priority":false},{"id":"HSC-BIO1-07-02","name":"Angiosperms and family characters: Poaceae","hours":1.0,"priority":false},{"id":"HSC-BIO1-07-03","name":"Angiosperms and family characters: Malvaceae + identification practice","hours":1.25,"priority":false}]},{"chapter":8,"name":"Tissue and Tissue System","priority":true,"lessons":[{"id":"HSC-BIO1-08-01","name":"Meristematic tissue and tissue systems","hours":1.25,"priority":true},{"id":"HSC-BIO1-08-02","name":"Primary internal structure of roots/stems; dissect and observe monocot roots and stems","hours":1.75,"priority":true}]},{"chapter":9,"name":"Plant Physiology","priority":false,"lessons":[{"id":"HSC-BIO1-09-01","name":"Mineral uptake, passive/active absorption, transpiration; stomatal structure and mechanism of stomatal opening/closing","hours":2.0,"priority":false},{"id":"HSC-BIO1-09-02","name":"Photosynthesis foundations and factors; CO2 demonstration","hours":1.5,"priority":false},{"id":"HSC-BIO1-09-03","name":"Calvin cycle and Hatch-Slack pathway","hours":1.5,"priority":false},{"id":"HSC-BIO1-09-04","name":"Respiration: glycolysis and pyruvate activation","hours":1.5,"priority":false},{"id":"HSC-BIO1-09-05","name":"Krebs cycle, electron transport, anaerobic respiration, respiratory sites, RQ and factors; demonstrate CO2 evolution during anaerobic respiration","hours":2.5,"priority":false}]},{"chapter":10,"name":"Reproduction of Flowering Plants","priority":true,"lessons":[{"id":"HSC-BIO1-10-01","name":"Sexual and asexual reproduction in flowering plants","hours":1.0,"priority":true},{"id":"HSC-BIO1-10-02","name":"Artificial vegetative propagation, hybridisation and significance","hours":1.5,"priority":true}]},{"chapter":11,"name":"Biotechnology","priority":true,"lessons":[{"id":"HSC-BIO1-11-01","name":"Tissue culture and applications","hours":1.0,"priority":true},{"id":"HSC-BIO1-11-02","name":"Genetic engineering, gene cloning and gene sequencing","hours":1.25,"priority":true},{"id":"HSC-BIO1-11-03","name":"Applications/potential of biotechnology and biosafety guidelines","hours":1.0,"priority":true}]},{"chapter":12,"name":"Environment, Distribution and Conservation of Organisms","priority":false,"lessons":[{"id":"HSC-BIO1-12-01","name":"Ecological levels, ecosystem and ecological pyramids","hours":0.75,"priority":false},{"id":"HSC-BIO1-12-02","name":"Aquatic/desert/salt adaptations, biomes and zoogeography, including the Oriental zoogeographical region","hours":0.75,"priority":false},{"id":"HSC-BIO1-12-03","name":"Bangladesh forests/biodiversity; endangered Bangladeshi organisms; in-situ and ex-situ conservation and importance of biodiversity conservation","hours":1.0,"priority":false}]}],"2nd Paper":[{"chapter":1,"name":"Animal Diversity and Classification","priority":true,"lessons":[{"id":"HSC-BIO2-01-01","name":"Animal diversity and bases/principles of classification","hours":1.25,"priority":true},{"id":"HSC-BIO2-01-02","name":"Comprehensive diagnostic characteristics/classification of non-chordate groups versus chordates","hours":1.25,"priority":true}]},{"chapter":2,"name":"Animal Identity","priority":true,"lessons":[{"id":"HSC-BIO2-02-01","name":"Hydra: classification, morphology, internal structure and cnidocyte","hours":2.0,"priority":true},{"id":"HSC-BIO2-02-02","name":"Hydra: digestion, movement, reproduction and symbiosis","hours":2.0,"priority":true},{"id":"HSC-BIO2-02-03","name":"Grasshopper: morphology, mouthparts, digestion and circulation","hours":1.5,"priority":true},{"id":"HSC-BIO2-02-04","name":"Grasshopper: respiration, excretion, vision, reproduction and metamorphosis","hours":1.5,"priority":true},{"id":"HSC-BIO2-02-05","name":"Rohu: classification, external structure and circulation/respiration","hours":1.5,"priority":true},{"id":"HSC-BIO2-02-06","name":"Rohu: swim bladder function/gas-exchange mechanism, reproduction, life cycle and natural conservation","hours":1.5,"priority":true}]},{"chapter":3,"name":"Human Physiology - Digestion and Absorption","priority":true,"lessons":[{"id":"HSC-BIO2-03-01","name":"Digestion in mouth, stomach and small intestine; digestive glands","hours":1.25,"priority":true},{"id":"HSC-BIO2-03-02","name":"Neural/hormonal control, absorption, large intestine; obesity factors and health risks","hours":1.75,"priority":true}]},{"chapter":4,"name":"Human Physiology - Blood Circulation","priority":true,"lessons":[{"id":"HSC-BIO2-04-01","name":"Blood, plasma, cells, clotting and lymphatic system","hours":2.0,"priority":true},{"id":"HSC-BIO2-04-02","name":"Heart anatomy and cardiac cycle; SA/AV nodes and Purkinje fibres","hours":1.5,"priority":true},{"id":"HSC-BIO2-04-03","name":"Blood pressure/circulation and receptor control","hours":1.0,"priority":true},{"id":"HSC-BIO2-04-04","name":"Angina, heart attack and heart failure; pacemaker; compare open-heart surgery, coronary-bypass surgery and angioplasty","hours":1.5,"priority":true}]},{"chapter":5,"name":"Human Physiology - Respiration and Breathing","priority":true,"lessons":[{"id":"HSC-BIO2-05-01","name":"Respiratory system, breathing mechanism and control","hours":1.0,"priority":true},{"id":"HSC-BIO2-05-02","name":"Gas transport/respiratory pigments; sinusitis and otitis media; respiratory problems, symptoms/remedies; compare lung X-ray images and explain artificial respiration","hours":1.5,"priority":true}]},{"chapter":6,"name":"Human Physiology - Excretion and Elimination","priority":true,"lessons":[{"id":"HSC-BIO2-06-01","name":"Excretory system, kidney/nephron structure and urine formation","hours":1.0,"priority":true},{"id":"HSC-BIO2-06-02","name":"Osmoregulation, hormonal control, Na+ balance, blood pH and acute kidney failure (causes/clinical response at HSC level)","hours":1.25,"priority":true}]},{"chapter":7,"name":"Human Physiology - Locomotion and Movement","priority":false,"lessons":[{"id":"HSC-BIO2-07-01","name":"Skeleton, bone, cartilage and muscle structure/function; mechanical explanation that muscles pull rather than push","hours":1.0,"priority":false},{"id":"HSC-BIO2-07-02","name":"Coordination of bones/muscles in movement; fracture types and joint injuries","hours":1.5,"priority":false}]},{"chapter":8,"name":"Human Physiology - Coordination and Control","priority":false,"lessons":[{"id":"HSC-BIO2-08-01","name":"Nervous coordination: brain, cranial nerves and detailed eye/ear sensory-organ structure and function","hours":1.75,"priority":false},{"id":"HSC-BIO2-08-02","name":"Chemical coordination: endocrine glands, hormones and misuse","hours":1.0,"priority":false}]},{"chapter":9,"name":"Continuation of Human Life","priority":false,"lessons":[{"id":"HSC-BIO2-09-01","name":"Male/female reproductive systems, hormonal activity and menstrual cycle","hours":1.0,"priority":false},{"id":"HSC-BIO2-09-02","name":"Gametogenesis, fertilisation, implantation, oogenesis, embryonic development and fate of the three embryonic germ layers","hours":0.25,"priority":false},{"id":"HSC-BIO2-09-03","name":"Pregnancy, contraception/family planning and IVF","hours":0.75,"priority":false},{"id":"HSC-BIO2-09-04","name":"Infertility, hormonal imbalance and developmental problems; STDs including syphilis, gonorrhoea and AIDS","hours":0.75,"priority":false}]},{"chapter":10,"name":"Protection of the Human Body","priority":false,"lessons":[{"id":"HSC-BIO2-10-01","name":"First and second lines of defence: skin, acids/enzymes and innate responses","hours":0.75,"priority":false},{"id":"HSC-BIO2-10-02","name":"Third line: antibodies, vaccines and memory cells","hours":1.0,"priority":false}]},{"chapter":11,"name":"Genetics and Evolution","priority":false,"lessons":[{"id":"HSC-BIO2-11-01","name":"Mendelian genetics and chromosome theory","hours":1.5,"priority":false},{"id":"HSC-BIO2-11-02","name":"Non-Mendelian inheritance: incomplete dominance, codominance, lethal/complementary/epistatic/polygenic","hours":1.5,"priority":false},{"id":"HSC-BIO2-11-03","name":"Sex determination and sex-linked disorders","hours":1.0,"priority":false},{"id":"HSC-BIO2-11-04","name":"ABO/Rh inheritance and pregnancy complications","hours":1.0,"priority":false},{"id":"HSC-BIO2-11-05","name":"Evolution: Lamarckism, Darwinism, neo-Darwinism and evidence","hours":1.5,"priority":false}]}]},"Higher Math":{"1st Paper":[{"chapter":1,"name":"Matrices and Determinants","priority":true,"lessons":[{"id":"HSC-HM1-01-01","name":"Matrix types, equality, addition/subtraction and multiplication","hours":2.0,"priority":true},{"id":"HSC-HM1-01-02","name":"Determinants, minors/cofactors and determinant properties","hours":1.5,"priority":true},{"id":"HSC-HM1-01-03","name":"Singular/non-singular matrices, inverse and Cramer's rule","hours":1.5,"priority":true}]},{"chapter":2,"name":"Vectors","priority":false,"lessons":[{"id":"HSC-HM1-02-01","name":"2D vectors, reciprocal/null vectors, operations, components and Cartesian unit vectors","hours":1.25,"priority":false},{"id":"HSC-HM1-02-02","name":"Position vectors and applications of vectors to 2D geometrical problems/proofs","hours":0.5,"priority":false},{"id":"HSC-HM1-02-03","name":"3D vectors and scalar product","hours":1.0,"priority":false},{"id":"HSC-HM1-02-04","name":"Vector equation of line, cross product and properties","hours":1.0,"priority":false}]},{"chapter":3,"name":"Straight Lines","priority":true,"lessons":[{"id":"HSC-HM1-03-01","name":"Cartesian/polar coordinates, distance, section and slope","hours":1.5,"priority":true},{"id":"HSC-HM1-03-02","name":"Forms/graphs of straight-line equations and intersections","hours":1.5,"priority":true},{"id":"HSC-HM1-03-03","name":"Angles, parallel/perpendicular conditions and lines under constraints","hours":0.5,"priority":true},{"id":"HSC-HM1-03-04","name":"Perpendicular distance, angle bisectors and triangle area","hours":1.0,"priority":true},{"id":"HSC-HM1-03-05","name":"Reflection/image of points/segments with respect to axes/lines","hours":1.0,"priority":true}]},{"chapter":4,"name":"Circle","priority":false,"lessons":[{"id":"HSC-HM1-04-01","name":"Circle equations/graphs in Cartesian and polar form","hours":1.5,"priority":false},{"id":"HSC-HM1-04-02","name":"Tangents, normals and tangent from external point","hours":1.5,"priority":false},{"id":"HSC-HM1-04-03","name":"Common chord and mixed circle problems","hours":1.0,"priority":false}]},{"chapter":5,"name":"Permutations and Combinations","priority":false,"lessons":[{"id":"HSC-HM1-05-01","name":"Counting principle, factorial and permutations","hours":1.25,"priority":false},{"id":"HSC-HM1-05-02","name":"Combinations, complementary combinations, conditional combinations and proof/application of nCr + nC(r-1) = (n+1)Cr","hours":1.25,"priority":false}]},{"chapter":6,"name":"Trigonometrical Ratios","priority":false,"lessons":[{"id":"HSC-HM1-06-01","name":"Angles in degrees/radians, arc length and sector area","hours":1.0,"priority":false},{"id":"HSC-HM1-06-02","name":"Trig ratios, quadrant signs and basic identities","hours":1.5,"priority":false},{"id":"HSC-HM1-06-03","name":"Transformations of trig functions and graphs","hours":2.5,"priority":false}]},{"chapter":7,"name":"Trigonometrical Ratios of Associated Angles","priority":true,"lessons":[{"id":"HSC-HM1-07-01","name":"Associated-angle and compound-angle formulae","hours":2.5,"priority":true},{"id":"HSC-HM1-07-02","name":"Sine/cosine rules and triangle-solving cases","hours":1.5,"priority":true},{"id":"HSC-HM1-07-03","name":"Mixed trig applications and equation-style practice","hours":1.5,"priority":true}]},{"chapter":8,"name":"Functions and Graphs of Functions","priority":false,"lessons":[{"id":"HSC-HM1-08-01","name":"Relations/functions: domain/range, one-one/onto, composite, identity, constant and inverse functions","hours":2.0,"priority":false},{"id":"HSC-HM1-08-02","name":"Quadratic, exponential, logarithmic and trig functions","hours":1.5,"priority":false},{"id":"HSC-HM1-08-03","name":"Absolute-value/transformed functions, graphs/periods, and image of points/segments with respect to axes or a given line","hours":1.5,"priority":false}]},{"chapter":9,"name":"Differentiation","priority":true,"lessons":[{"id":"HSC-HM1-09-01","name":"Limits, one-sided limits, standard trig limits; continuous functions and formal use/proof of continuity properties","hours":2.0,"priority":true},{"id":"HSC-HM1-09-02","name":"Derivatives from first principles, including derivation of d(x^n)/dx, plus standard derivatives","hours":1.5,"priority":true},{"id":"HSC-HM1-09-03","name":"Product/quotient/chain/inverse rules and successive derivatives","hours":1.5,"priority":true},{"id":"HSC-HM1-09-04","name":"Tangent/slope, increasing/decreasing functions and extrema","hours":1.5,"priority":true},{"id":"HSC-HM1-09-05","name":"LMVT, differentials and approximate reconstruction/evaluation","hours":1.5,"priority":true}]},{"chapter":10,"name":"Integration","priority":false,"lessons":[{"id":"HSC-HM1-10-01","name":"Antiderivatives and standard indefinite integrals","hours":2.0,"priority":false},{"id":"HSC-HM1-10-02","name":"Substitution and partial fractions","hours":1.5,"priority":false},{"id":"HSC-HM1-10-03","name":"Integration by parts","hours":1.5,"priority":false},{"id":"HSC-HM1-10-04","name":"Definite integrals and fundamental theorem","hours":1.5,"priority":false},{"id":"HSC-HM1-10-05","name":"Area enclosed between y=f(x) and the x-axis using definite integrals and fundamental limits","hours":1.5,"priority":false}]}],"2nd Paper":[{"chapter":1,"name":"Real Numbers and Inequalities","priority":false,"lessons":[{"id":"HSC-HM2-01-01","name":"Real-number subsets and axioms; inequality axioms and proof-style use of these properties","hours":0.75,"priority":false},{"id":"HSC-HM2-01-02","name":"Absolute-value and one-variable inequalities/number-line solutions","hours":1.25,"priority":false},{"id":"HSC-HM2-01-03","name":"Linear inequalities in two variables and graphs","hours":0.75,"priority":false}]},{"chapter":2,"name":"Linear Programming","priority":true,"lessons":[{"id":"HSC-HM2-02-01","name":"Formulation of linear-programming problems","hours":0.5,"priority":true},{"id":"HSC-HM2-02-02","name":"Graphical feasible region and optimization","hours":0.75,"priority":true}]},{"chapter":3,"name":"Complex Numbers","priority":true,"lessons":[{"id":"HSC-HM2-03-01","name":"Complex numbers, Argand plane, modulus/argument and conjugate","hours":1.5,"priority":true},{"id":"HSC-HM2-03-02","name":"Sum/difference/product of complex numbers with geometric representation/proofs on the Argand plane","hours":1.0,"priority":true},{"id":"HSC-HM2-03-03","name":"Square roots and cube roots of unity","hours":1.0,"priority":true},{"id":"HSC-HM2-03-04","name":"Quotient/product geometry, moduli/arguments and mixed complex-number problems on the Argand plane","hours":1.5,"priority":true}]},{"chapter":4,"name":"Polynomials and Polynomial Equations","priority":true,"lessons":[{"id":"HSC-HM2-04-01","name":"Quadratic equations, roots/coefficients and discriminant","hours":1.5,"priority":true},{"id":"HSC-HM2-04-02","name":"Cubic equations and symmetric expressions","hours":1.5,"priority":true},{"id":"HSC-HM2-04-03","name":"Polynomials and root-coefficient relations","hours":1.0,"priority":true},{"id":"HSC-HM2-04-04","name":"Bisection and Newton-Raphson approximate solutions","hours":1.5,"priority":true}]},{"chapter":5,"name":"Binomial Expressions","priority":false,"lessons":[{"id":"HSC-HM2-05-01","name":"Mathematical induction and Pascal triangle","hours":0.5,"priority":false},{"id":"HSC-HM2-05-02","name":"Binomial theorem, general/middle/equidistant terms","hours":1.25,"priority":false},{"id":"HSC-HM2-05-03","name":"Binomial expansion using partial fractions","hours":0.75,"priority":false}]},{"chapter":6,"name":"Conics","priority":true,"lessons":[{"id":"HSC-HM2-06-01","name":"Conics as loci/intersections of a cone and plane; focus/directrix/eccentricity, parabola, latus rectum/focal perpendicular, focus/vertex/directrix","hours":2.5,"priority":true},{"id":"HSC-HM2-06-02","name":"Ellipse: standard form, axes, focus/directrix and parametric coordinates","hours":1.5,"priority":false},{"id":"HSC-HM2-06-03","name":"Hyperbola: standard form, axes, asymptotes, focus/directrix and parametric coordinates","hours":2.5,"priority":true},{"id":"HSC-HM2-06-04","name":"Tracing conics and mixed locus problems","hours":1.0,"priority":false}]},{"chapter":7,"name":"Inverse Trigonometric Functions and Trigonometric Equations","priority":true,"lessons":[{"id":"HSC-HM2-07-01","name":"Inverse trig functions, principal values and graphs","hours":1.5,"priority":true},{"id":"HSC-HM2-07-02","name":"Trig equations and general solutions","hours":2.5,"priority":true},{"id":"HSC-HM2-07-03","name":"Solutions of trig equations in ranges; graph a trigonometric function and its inverse on the same coordinate axes for comparison","hours":1.5,"priority":true}]},{"chapter":8,"name":"Statics","priority":true,"lessons":[{"id":"HSC-HM2-08-01","name":"Forces, transmissibility, action/reaction and resolution/resultant","hours":1.5,"priority":true},{"id":"HSC-HM2-08-02","name":"Equilibrium, triangle law, Lami theorem and coplanar forces","hours":1.5,"priority":true},{"id":"HSC-HM2-08-03","name":"Parallel forces on rigid bodies and graphical resultant","hours":1.0,"priority":true}]},{"chapter":9,"name":"Motion of Particles in a Plane","priority":false,"lessons":[{"id":"HSC-HM2-09-01","name":"Displacement/velocity/acceleration and relative velocity","hours":1.5,"priority":false},{"id":"HSC-HM2-09-02","name":"Equations of motion, nth-second/average velocity and motion graphs","hours":1.5,"priority":false},{"id":"HSC-HM2-09-03","name":"Vertical projection: greatest height/time of flight","hours":1.0,"priority":false},{"id":"HSC-HM2-09-04","name":"Projectile motion, horizontal range and mathematical proof that the trajectory is a parabola","hours":1.5,"priority":false}]},{"chapter":10,"name":"Measures of Dispersion and Probability","priority":false,"lessons":[{"id":"HSC-HM2-10-01","name":"Dispersion, variance and standard deviation for grouped/ungrouped data","hours":1.25,"priority":false},{"id":"HSC-HM2-10-02","name":"Probability concepts; addition laws for mutually exclusive and non-mutually-exclusive events","hours":0.75,"priority":false},{"id":"HSC-HM2-10-03","name":"Multiplication law for dependent/independent events and real-life probability applications","hours":1.25,"priority":false}]}]}};
+const SEED_DONE=[["Physics","1st Paper",2],["Physics","1st Paper",3],["Chemistry","1st Paper",2],["Higher Math","1st Paper",1]];
+
+let state=load();
+state.rows = (state.rows||[]).map(r=>({
+  subject:r.subject||"New Subject",
+  hy:r.hy??"",
+  ca1:r.ca1??"",
+  ca2:r.ca2??"",
+  test2:r.test2??"",
+  pr2:r.pr2??"",
+  test1:r.test1??"",
+  pr1:r.pr1??"",
+  prCap:r.prCap??"23"
+}));
+state.syllabusStatus = state.syllabusStatus || {};
+state.customSyllabus = state.customSyllabus || {};
+state.lessonStatus = state.lessonStatus || {};
+state.lessonSkipped = state.lessonSkipped || {};
+state.chapterCoverage = state.chapterCoverage || {};
+if(!Array.isArray(state.examSchedule)){
+  state.examSchedule=structuredClone(DEFAULT_SCHEDULE);
+}
+if(!Array.isArray(state.studyRoutine)){
+  state.studyRoutine=structuredClone(DEFAULT_ROUTINE);
+}
+
+
+
+
+function canonicalSyllabusSubject(name){
+  const s=String(name||"").trim().toLowerCase();
+  if(s.includes("physics")) return "Physics";
+  if(s.includes("chem")) return "Chemistry";
+  if(s.includes("math")) return "Higher Math";
+  if(s.includes("biology") || s==="bio" || s.includes(" bio")) return "Biology";
+  return null;
+}
+function syllabusKey(subject,paper,chapter){
+  return `${subject}|${paper}|${chapter}`;
+}
+SEED_DONE.forEach(([subject,paper,chapter])=>{
+  const k=syllabusKey(subject,paper,chapter);
+  if(state.syllabusStatus[k]===undefined) state.syllabusStatus[k]="done";
+});
+
+function migrateDetailedSyllabusState(){
+  Object.entries(SYLLABUS_LIBRARY).forEach(([subject,papers])=>{
+    Object.entries(papers).forEach(([paper,items])=>{
+      items.forEach(item=>{
+        const key=syllabusKey(subject,paper,item.chapter);
+        const hasAnyLessonState=item.lessons.some(l=>state.lessonStatus[l.id]!==undefined);
+        if(hasAnyLessonState) return;
+
+        const old=state.syllabusStatus[key]||"pending";
+        if(old==="done"){
+          item.lessons.forEach(l=>state.lessonStatus[l.id]=true);
+          state.chapterCoverage[key]=item.lessons.length;
+        }else if(old==="doing" && item.lessons.length){
+          state.lessonStatus[item.lessons[0].id]=true;
+          state.chapterCoverage[key]=1;
+        }else{
+          state.chapterCoverage[key]=0;
+        }
+      });
+    });
+  });
+}
+migrateDetailedSyllabusState();
+
+
+
+const targetEl=document.getElementById("target");
+const hyEl=document.getElementById("defaultHY");
+targetEl.value=state.target??85;
+hyEl.value=state.defaultHY??36;
+
+function num(v){return v===""||v===null||v===undefined?null:Number(v)}
+function pct(v){return Number.isFinite(v)?v.toFixed(1)+"%":"—"}
+function safe(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+
+
+function scheduleDayName(dateStr){
+  if(!dateStr) return "";
+  const d=new Date(dateStr+"T12:00:00");
+  if(Number.isNaN(d.getTime())) return "";
+  return new Intl.DateTimeFormat("en-US",{weekday:"short"}).format(d);
+}
+
+function schedulePrettyDate(dateStr){
+  const d=new Date(dateStr+"T12:00:00");
+  if(Number.isNaN(d.getTime())) return dateStr||"";
+  return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric"}).format(d);
+}
+
+function localTodayISO(){
+  const d=new Date();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,"0");
+  const day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function daysUntil(dateStr){
+  const a=new Date(localTodayISO()+"T12:00:00");
+  const b=new Date(dateStr+"T12:00:00");
+  return Math.round((b-a)/86400000);
+}
+
+function countdownLabel(dateStr){
+  const n=daysUntil(dateStr);
+  if(n===0) return "TODAY";
+  if(n===1) return "TOMORROW";
+  if(n>1) return `IN ${n} DAYS`;
+  if(n===-1) return "1 DAY OVERDUE";
+  return `${Math.abs(n)} DAYS OVERDUE`;
+}
+
+function syncScheduleDay(){
+  const date=document.getElementById("scheduleDate").value;
+  document.getElementById("scheduleDay").value=scheduleDayName(date);
+}
+
+function resetScheduleForm(){
+  document.getElementById("scheduleEditId").value="";
+  document.getElementById("scheduleDate").value="";
+  document.getElementById("scheduleDay").value="";
+  document.getElementById("scheduleType").value="Exam";
+  document.getElementById("scheduleSubject").value="";
+  document.getElementById("scheduleSyllabus").value="";
+  document.getElementById("scheduleSubmit").textContent="+ Add";
+}
+
+function submitSchedule(event){
+  event.preventDefault();
+  const id=document.getElementById("scheduleEditId").value;
+  const date=document.getElementById("scheduleDate").value;
+  const type=document.getElementById("scheduleType").value;
+  const subject=document.getElementById("scheduleSubject").value.trim();
+  const syllabus=document.getElementById("scheduleSyllabus").value.trim();
+  if(!date||!subject||!syllabus) return;
+
+  if(id){
+    const item=state.examSchedule.find(x=>x.id===id);
+    if(item){
+      item.date=date;
+      item.type=type;
+      item.subject=subject;
+      item.syllabus=syllabus;
+    }
+  }else{
+    state.examSchedule.push({
+      id:"evt-"+Date.now()+"-"+Math.random().toString(36).slice(2,7),
+      date,type,subject,syllabus,done:false
+    });
+  }
+  resetScheduleForm();
+  save();
+  renderSchedule();
+}
+
+function editSchedule(id){
+  const item=state.examSchedule.find(x=>x.id===id);
+  if(!item) return;
+  document.getElementById("scheduleEditId").value=item.id;
+  document.getElementById("scheduleDate").value=item.date;
+  document.getElementById("scheduleType").value=item.type||"Exam";
+  document.getElementById("scheduleSubject").value=item.subject||"";
+  document.getElementById("scheduleSyllabus").value=item.syllabus||"";
+  syncScheduleDay();
+  document.getElementById("scheduleSubmit").textContent="Save";
+  document.getElementById("scheduleSubject").focus();
+}
+
+function toggleScheduleDone(id){
+  const item=state.examSchedule.find(x=>x.id===id);
+  if(!item) return;
+  item.done=!item.done;
+  save();
+  renderSchedule();
+}
+
+function deleteSchedule(id){
+  state.examSchedule=state.examSchedule.filter(x=>x.id!==id);
+  save();
+  renderSchedule();
+}
+
+function toggleAgenda(){
+  document.getElementById("agendaShell").classList.toggle("open");
+}
+
+function toggleRoutine(){
+  const wrap=document.getElementById("routineWrap");
+  wrap.classList.toggle("open");
+  const text=document.getElementById("routineToggleText");
+  text.textContent=wrap.classList.contains("open") ? "Click to collapse" : "Click to expand";
+}
+
+function groupScheduleByDate(items){
+  const groups=new Map();
+  items.forEach(item=>{
+    if(!groups.has(item.date)) groups.set(item.date,[]);
+    groups.get(item.date).push(item);
+  });
+  return [...groups.entries()].sort((a,b)=>String(a[0]).localeCompare(String(b[0])));
+}
+
+function renderRoutine(){
+  const root=document.getElementById("routineGrid");
+  if(!root) return;
+  const days=[...(state.studyRoutine||[])].sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  if(!days.length){
+    root.innerHTML='<div class="schedule-empty">No routine added yet.</div>';
+    return;
+  }
+  root.innerHTML=days.map(day=>`
+    <div class="routine-day">
+      <div class="routine-date">
+        <strong>${safe(schedulePrettyDate(day.date))}</strong>
+        <span>${safe(scheduleDayName(day.date))}</span>
+      </div>
+      <div class="routine-blocks">
+        ${(day.blocks||[]).map(block=>`
+          <div class="routine-block">
+            <div class="rb-subject">${safe(block.subject)}</div>
+            <div class="rb-task">${safe(block.task)}</div>
+            ${block.note?`<div class="rb-note">${safe(block.note)}</div>`:""}
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+}
+
+function renderSchedule(){
+  const root=document.getElementById("scheduleList");
+  const tiny=document.getElementById("agendaNextTiny");
+  const summary=document.getElementById("agendaSummary");
+  if(!root||!tiny||!summary) return;
+
+  const items=[...(state.examSchedule||[])].sort((a,b)=>{
+    if(String(a.date)!==String(b.date)) return String(a.date).localeCompare(String(b.date));
+    if(Boolean(a.done)!==Boolean(b.done)) return a.done?1:-1;
+    return String(a.type||"").localeCompare(String(b.type||""));
+  });
+
+  const groups=groupScheduleByDate(items);
+
+  if(!groups.length){
+    root.innerHTML='<div class="schedule-empty">No exams or deadlines added yet.</div>';
+  }else{
+    root.innerHTML=groups.map(([date,events])=>{
+      const allDone=events.every(x=>x.done);
+      const countLabel=`${events.length} item${events.length===1?"":"s"}`;
+
+      return `
+        <div class="day-row ${allDone?"done":""}">
+          <div class="day-date">
+            <div class="day-date-num">${safe(schedulePrettyDate(date))}</div>
+            <div class="day-date-name">${safe(scheduleDayName(date))}</div>
+            <div class="day-date-count">${countLabel}</div>
+          </div>
+          <div class="day-items">
+            ${events.map((item,idx)=>{
+              const cd=countdownLabel(item.date);
+              const urgent=daysUntil(item.date)<=2 && !item.done;
+              const typeClass=String(item.type||"Exam").toLowerCase().replace(/\s+/g,"-");
+              return `
+                ${idx>0?'<div class="day-partition"></div>':""}
+                <div class="day-item ${item.done?"done":""}">
+                  <span class="day-type ${typeClass}">${safe(item.type||"Exam")}</span>
+                  <div class="day-subject">${safe(item.subject)}</div>
+                  <div class="day-syllabus">${safe(item.syllabus)}</div>
+                  <div class="day-countdown ${urgent?"urgent":""}">${item.done?"DONE":safe(cd)}</div>
+                  <div class="day-actions">
+                    <button type="button" onclick="toggleScheduleDone('${item.id}')">${item.done?"Undo":"Done"}</button>
+                    <button type="button" onclick="editSchedule('${item.id}')">Edit</button>
+                    <button type="button" class="red" onclick="deleteSchedule('${item.id}')">×</button>
+                  </div>
+                </div>`;
+            }).join("")}
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  const unfinished=items.filter(x=>!x.done);
+  const nextDate=unfinished.length ? unfinished[0].date : null;
+  const nextItems=nextDate ? unfinished.filter(x=>x.date===nextDate) : [];
+
+  if(!nextDate){
+    tiny.textContent="Nothing pending";
+    summary.innerHTML="<strong>Nothing pending.</strong> Add the next exam, homework or deadline below.";
+  }else{
+    const head=`${countdownLabel(nextDate)} · ${scheduleDayName(nextDate)} ${schedulePrettyDate(nextDate)}`;
+    tiny.textContent=head;
+    summary.innerHTML=`
+      <strong>${safe(head)}</strong><br>
+      ${nextItems.map(x=>`${safe(x.type)} — ${safe(x.subject)}: ${safe(x.syllabus)}`).join("<br>")}`;
+  }
+
+  renderRoutine();
+}
+
+function subjectMeta(name){
+  const s=String(name||"").trim().toLowerCase();
+  const isICT=s.includes("ict");
+  const isBangla=s.includes("bangla");
+  const isEnglish=s.includes("english");
+  const practicalSubject=
+    s.includes("physics") ||
+    s.includes("chem") ||
+    s.includes("biology") ||
+    s.includes("bio") ||
+    s.includes("math") ||
+    isICT;
+
+  return {
+    isICT,
+    isBangla,
+    isEnglish,
+    practicalSubject,
+    writtenMax:(isBangla||isEnglish)?100:75
+  };
+}
+
+function calc(r){
+  const target=Number(targetEl.value||85);
+  const defHY=Number(hyEl.value||36);
+  const hy=num(r.hy)??defHY;
+
+  const c1=num(r.ca1), c2=num(r.ca2);
+  const t2=num(r.test2), p2=num(r.pr2);
+  const t1=num(r.test1), p1=num(r.pr1);
+  const meta=subjectMeta(r.subject);
+  const isICT=meta.isICT;
+  const practicalSubject=meta.practicalSubject;
+  const writtenMax=meta.writtenMax;
+
+  // realistic ceiling used ONLY for maximum-possible projections.
+  // Actual practical inputs still accept 0-25.
+  const prCap=Math.min(25,Math.max(0,num(r.prCap)??23));
+
+  // 2nd-paper / ICT exam component:
+  // Bangla/English: written /100 scaled to 60.
+  // Practical subjects: written /75 + practical /25 = /100, then scaled to 60.
+  let exam2=NaN;
+  if(practicalSubject){
+    if(t2!==null && p2!==null) exam2=((t2+p2)/100)*60;
+  }else{
+    if(t2!==null) exam2=(t2/writtenMax)*60;
+  }
+
+  const second=(c1!==null && c2!==null && Number.isFinite(exam2))
+    ? 0.1*hy + c1 + c2 + exam2
+    : NaN;
+
+  // First-paper side:
+  // For practical subjects, first paper is also written /75 + its own practical /25.
+  // For non-practical two-paper subjects, first test is /100.
+  let first=NaN;
+  if(!isICT){
+    if(practicalSubject){
+      if(t1!==null && p1!==null) first=t1+p1; // already /100
+    }else{
+      if(t1!==null) first=t1; // /100
+    }
+  }
+
+  const combined=isICT
+    ? second
+    : ((Number.isFinite(second) && Number.isFinite(first)) ? (second+first)/2 : NaN);
+
+  // Required first-paper total /100 after second result is known.
+  const needFirstTotal=(!isICT && Number.isFinite(second))
+    ? Math.max(0,2*target-second)
+    : NaN;
+
+  // Required raw 2nd written mark once CTs and first-side assumptions are available.
+  // For practical subjects, uses entered 2nd practical if present; otherwise assumes practical cap.
+  let need2=NaN;
+  if(c1!==null && c2!==null){
+    if(isICT){
+      const practicalAssumed=practicalSubject ? (p2!==null?p2:prCap) : 0;
+      if(practicalSubject){
+        need2=Math.max(0, ((target-c1-c2-0.1*hy)/60)*100 - practicalAssumed);
+      }else{
+        need2=Math.max(0, (target-c1-c2-0.1*hy)*writtenMax/60);
+      }
+    }else if(Number.isFinite(first)){
+      const practicalAssumed=practicalSubject ? (p2!==null?p2:prCap) : 0;
+      if(practicalSubject){
+        need2=Math.max(0, ((2*target-first-c1-c2-0.1*hy)/60)*100 - practicalAssumed);
+      }else{
+        need2=Math.max(0, (2*target-first-c1-c2-0.1*hy)*writtenMax/60);
+      }
+    }
+  }
+
+  // Maximum possible second side from remaining blanks.
+  let exam2Max;
+  if(practicalSubject){
+    const maxWritten=(t2===null?75:t2);
+    const maxPractical=(p2===null?prCap:p2);
+    exam2Max=((maxWritten+maxPractical)/100)*60;
+  }else{
+    exam2Max=((t2===null?writtenMax:t2)/writtenMax)*60;
+  }
+
+  const secondMax=
+    0.1*hy +
+    (c1===null?15:c1) +
+    (c2===null?15:c2) +
+    exam2Max;
+
+  // Maximum possible first side.
+  let firstMax=NaN;
+  if(!isICT){
+    if(practicalSubject){
+      firstMax=(t1===null?75:t1)+(p1===null?prCap:p1);
+    }else{
+      firstMax=(t1===null?100:t1);
+    }
+  }
+
+  const max=isICT
+    ? secondMax
+    : (firstMax+secondMax)/2;
+
+  return {
+    second, combined, max,
+    need1:needFirstTotal,
+    need2,
+    first,
+    isICT,
+    practicalSubject,
+    writtenMax,
+    prCap
+  };
+}
+
+function status(c){
+  const target=Number(targetEl.value||85);
+  if(c.max<target-.0001)return["Mathematically cooked","cooked"];
+
+  const need1Risk=Number.isFinite(c.need1)?c.need1:0;
+  const need2Pct=Number.isFinite(c.need2)
+    ? (c.need2/c.writtenMax*100)
+    : 0;
+  const req=Math.max(need1Risk,need2Pct);
+
+  if(req>=95)return["Danger","danger"];
+  if(req>=85)return["Needs work","work"];
+  return["Chilling","chill"];
+}
+
+function updateOverall(){
+  const finals=[];
+  const maxes=[];
+
+  state.rows.forEach(r=>{
+    const c=calc(r);
+    if(Number.isFinite(c.combined)) finals.push(c.combined);
+    if(Number.isFinite(c.max)) maxes.push(c.max);
+  });
+
+  const overall = finals.length
+    ? finals.reduce((a,b)=>a+b,0)/finals.length
+    : NaN;
+
+  const overallMax = maxes.length
+    ? maxes.reduce((a,b)=>a+b,0)/maxes.length
+    : NaN;
+
+  document.getElementById("overallAverage").textContent = Number.isFinite(overall)
+    ? overall.toFixed(1)+"%"
+    : "—";
+
+  document.getElementById("completedCount").textContent =
+    `${finals.length}/${state.rows.length}`;
+
+  document.getElementById("overallMax").textContent = Number.isFinite(overallMax)
+    ? overallMax.toFixed(1)+"%"
+    : "—";
+
+  const note=document.getElementById("overallNote");
+  if(finals.length===0){
+    note.textContent="Enter completed subject results to build your overall academic average.";
+  }else if(finals.length===state.rows.length){
+    note.textContent="All listed subjects are complete. This is your full academic average across every subject in the tracker.";
+  }else{
+    note.textContent=`Current average across ${finals.length} completed subject${finals.length===1?"":"s"}. Incomplete subjects are not counted yet.`;
+  }
+}
+
+function subjectClass(name){
+  const s=String(name||"").trim().toLowerCase();
+  if(s.includes("math")) return "math";
+  if(s.includes("physics")) return "physics";
+  if(s.includes("biology") || s.includes("bio")) return "biology";
+  if(s.includes("chem")) return "chemistry";
+  if(s.includes("ict")) return "ict";
+  if(s.includes("english")) return "english";
+  if(s.includes("bangla")) return "bangla";
+  return "custom";
+}
+
+
+function syllabusDataFor(name){
+  const canonical=canonicalSyllabusSubject(name);
+  if(canonical && SYLLABUS_LIBRARY[canonical]){
+    return {canonical,papers:SYLLABUS_LIBRARY[canonical],verified:true};
+  }
+  const customKey=String(name||"").trim().toLowerCase();
+  const custom=state.customSyllabus[customKey]||[];
+  const grouped={};
+  custom.forEach(item=>{
+    const paper=item.paper||"Syllabus";
+    (grouped[paper] ||= []).push(item);
+  });
+  return {canonical:customKey,papers:grouped,verified:false};
+}
+
+function chapterItem(subject,paper,chapter){
+  const paperItems=(SYLLABUS_LIBRARY[subject]||{})[paper]||[];
+  return paperItems.find(x=>String(x.chapter)===String(chapter))||null;
+}
+
+function chapterDetailState(subject,paper,item){
+  if(!item || !item.lessons || !item.lessons.length){
+    const st=state.syllabusStatus[syllabusKey(subject,paper,item?.chapter||"")]||"pending";
+    return {status:st,done:st==="done"?1:0,total:1,pct:st==="done"?100:st==="doing"?50:0,coverage:0};
+  }
+  const total=item.lessons.length;
+  const done=item.lessons.filter(l=>state.lessonStatus[l.id]===true).length;
+  const pct=Math.round(done/total*100);
+  const status=done===0?"pending":done===total?"done":"doing";
+  return {status,done,total,pct,coverage:Number(state.chapterCoverage[syllabusKey(subject,paper,item.chapter)]||0)};
+}
+
+function syncChapterStatus(subject,paper,item){
+  const d=chapterDetailState(subject,paper,item);
+  state.syllabusStatus[syllabusKey(subject,paper,item.chapter)]=d.status;
+  return d;
+}
+
+function syllabusStatusFor(subject,paper,chapter){
+  const item=chapterItem(subject,paper,chapter);
+  if(item && item.lessons?.length) return syncChapterStatus(subject,paper,item).status;
+  return state.syllabusStatus[syllabusKey(subject,paper,chapter)] || "pending";
+}
+
+function syllabusStats(name){
+  const data=syllabusDataFor(name);
+  let total=0,done=0,doing=0,priorityTotal=0,priorityDone=0;
+  Object.entries(data.papers).forEach(([paper,items])=>{
+    items.forEach(item=>{
+      total++;
+      const st=syllabusStatusFor(data.canonical,paper,item.chapter);
+      if(st==="done") done++;
+      else if(st==="doing") doing++;
+      if(item.priority){
+        priorityTotal++;
+        if(st==="done") priorityDone++;
+      }
+    });
+  });
+  return {total,done,doing,pending:Math.max(0,total-done-doing),priorityTotal,priorityDone,priorityLeft:Math.max(0,priorityTotal-priorityDone)};
+}
+
+
+function syllabusLaunchHtml(name){
+  const s=syllabusStats(name);
+  if(!s.total){
+    return `<span class="sl-label">Syllabus</span><span class="sl-count">Add</span><span class="sl-priority">not loaded</span>`;
+  }
+  return `<span class="sl-label">Syllabus</span><span class="sl-count">${s.done}/${s.total}</span><span class="sl-priority">${s.priorityLeft} priority left</span>`;
+}
+
+
+function lessonDetailHtml(subject,paper,item){
+  if(!item.lessons || !item.lessons.length) return "";
+  const d=chapterDetailState(subject,paper,item);
+  const key=syllabusKey(subject,paper,item.chapter);
+  const coverage=Math.max(0,Math.min(item.lessons.length,Number(state.chapterCoverage[key]||0)));
+
+  const segments=item.lessons.map((lesson,idx)=>{
+    const done=state.lessonStatus[lesson.id]===true;
+    const skipped=state.lessonSkipped[lesson.id]===true;
+    const cls=done?"done":skipped?"skipped":idx<coverage?"skipped":"future";
+    return `<span class="chapter-segment ${cls}" title="Lesson ${idx+1}: ${safe(lesson.name)}"></span>`;
+  }).join("");
+
+  const lessons=item.lessons.map((lesson,idx)=>{
+    const done=state.lessonStatus[lesson.id]===true;
+    const skipped=state.lessonSkipped[lesson.id]===true;
+    const cls=done?"done":skipped?"skipped":idx<coverage?"skipped":"future";
+    const mark=done?"✓":skipped?"!":"○";
+    return `
+      <button type="button" class="lesson-row ${cls}" onclick="toggleLesson('${safe(subject)}','${safe(paper)}','${safe(String(item.chapter))}','${lesson.id}',${idx},this)">
+        <span class="lesson-mark">${mark}</span>
+        <span class="lesson-name">${safe(lesson.name)}</span>
+        <span class="lesson-meta ${lesson.priority?"priority":""}">${lesson.priority?"PRIORITY · ":""}${lesson.hours?lesson.hours+"h":""}</span>
+      </button>`;
+  }).join("");
+
+  return `
+    <div class="chapter-detail" onclick="event.stopPropagation()">
+      <div class="chapter-detail-head">
+        <div>
+          <div class="chapter-detail-title">Detailed chapter progress</div>
+          <div class="small">Drag through the lessons, then tap any skipped lesson to mark it incomplete.</div>
+        </div>
+        <div class="chapter-detail-score">${d.pct}%</div>
+      </div>
+      <input class="chapter-slider" type="range" min="0" max="${item.lessons.length}" step="1" value="${coverage}"
+        aria-label="Chapter coverage"
+        oninput="setChapterCoverage('${safe(subject)}','${safe(paper)}','${safe(String(item.chapter))}',this.value,this)">
+      <div class="chapter-segments" style="grid-template-columns:repeat(${item.lessons.length},minmax(0,1fr))">${segments}</div>
+      <div class="lesson-list">${lessons}</div>
+      <div class="detail-hint">Green = complete. Red = you passed this point but left that lesson incomplete. Grey = not reached yet. The chapter’s Pending / In progress / Done state stays synced automatically.</div>
+    </div>`;
+}
+
+function syllabusItemHtml(subject,paper,item){
+  const d=chapterDetailState(subject,paper,item);
+  const st=d.status;
+  const icon=st==="done"?"✓":st==="doing"?"◐":"○";
+  const stateClass=st==="done"?"done":st==="doing"?"doing":"pending";
+  return `
+    <div class="syllabus-item ${item.priority?"priority":""} ${stateClass}" data-subject="${safe(subject)}" data-paper="${safe(paper)}" data-chapter="${safe(String(item.chapter))}">
+      <button class="syllabus-check" type="button" title="Cycle status" onclick="cycleSyllabusStatus('${safe(subject)}','${safe(paper)}','${safe(String(item.chapter))}',this);event.stopPropagation()">${icon}</button>
+      <div class="syllabus-copy" role="button" tabindex="0"
+        onclick="toggleChapterDetail(this)"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleChapterDetail(this)}">
+        <div class="syllabus-chapter">Chapter ${safe(item.chapter)}</div>
+        <div class="syllabus-name">${safe(item.name)}</div>
+      </div>
+      <div style="display:grid;gap:5px;justify-items:end">
+        ${item.priority?'<span class="priority-tag">Priority</span>':""}
+        ${item.lessons?.length?`<span class="chapter-progress-pill">${d.pct}%</span>`:""}
+      </div>
+      ${lessonDetailHtml(subject,paper,item)}
+    </div>`;
+}
+
+function syllabusPanelHtml(name){
+  const data=syllabusDataFor(name);
+  const stats=syllabusStats(name);
+  const paperEntries=Object.entries(data.papers);
+
+  if(!paperEntries.length){
+    return `
+      <div class="syllabus-panel-head">
+        <div><h3>Syllabus</h3></div>
+        <div class="syllabus-overview">No verified chapter list loaded.</div>
+      </div>
+      <div class="syllabus-empty">
+        ${safe(name)} is not included in your science source-of-truth workbook, so I have not invented a chapter list.
+        Add items manually here, or later give ChatGPT the official syllabus and this can be preloaded.
+        <br><button class="syllabus-custom-add" onclick="addCustomSyllabusItem('${safe(name)}',this)">+ Add syllabus item</button>
+      </div>`;
+  }
+
+  const columns=paperEntries.map(([paper,items])=>{
+    const paperDone=items.filter(x=>syllabusStatusFor(data.canonical,paper,x.chapter)==="done").length;
+    return `
+      <section class="syllabus-paper">
+        <div class="syllabus-paper-title"><span>${safe(paper)}</span><span>${paperDone}/${items.length}</span></div>
+        <div class="syllabus-list">${items.map(item=>syllabusItemHtml(data.canonical,paper,item)).join("")}</div>
+      </section>`;
+  }).join("");
+
+  return `
+    <div class="syllabus-panel-head">
+      <div>
+        <h3>Whole syllabus</h3>
+        <div class="small">${data.verified?"Loaded from your source-of-truth workbook.":"Manual syllabus."}</div>
+      </div>
+      <div class="syllabus-overview">
+        <strong>${stats.done}/${stats.total} done</strong><br>
+        ${stats.doing} in progress · ${stats.pending} pending<br>
+        ${stats.priorityLeft} priority remaining
+      </div>
+    </div>
+    <div class="syllabus-columns">${columns}</div>
+    <div class="syllabus-legend">
+      <span>○ Pending</span><span class="lg-doing">◐ In progress</span><span class="lg-done">✓ Done</span><span class="lg-priority">Red = Priority</span>
+    </div>`;
+}
+
+function toggleSyllabus(btn){
+  const card=btn.closest(".subject");
+  const panel=card.querySelector(".syllabus-panel");
+  panel.classList.toggle("open");
+}
+
+function refreshSyllabusCard(card,index){
+  const r=state.rows[index];
+  const launch=card.querySelector(".syllabus-launch");
+  const panel=card.querySelector(".syllabus-panel");
+  if(launch) launch.innerHTML=syllabusLaunchHtml(r.subject);
+  if(panel) panel.innerHTML=syllabusPanelHtml(r.subject);
+  save();
+}
+
+function toggleChapterDetail(copyEl){
+  const itemEl=copyEl.closest(".syllabus-item");
+  itemEl.classList.toggle("expanded");
+}
+
+function refreshChapterItem(btnOrEl,subject,paper,chapter){
+  const oldItem=btnOrEl.closest(".syllabus-item");
+  const item=chapterItem(subject,paper,chapter);
+  if(!oldItem || !item) return;
+  const wasExpanded=oldItem.classList.contains("expanded");
+  const temp=document.createElement("div");
+  temp.innerHTML=syllabusItemHtml(subject,paper,item).trim();
+  const fresh=temp.firstElementChild;
+  if(wasExpanded) fresh.classList.add("expanded");
+  oldItem.replaceWith(fresh);
+
+  const card=fresh.closest(".subject");
+  const index=[...document.querySelectorAll(".subject")].indexOf(card);
+  const launch=card.querySelector(".syllabus-launch");
+  if(launch) launch.innerHTML=syllabusLaunchHtml(state.rows[index].subject);
+
+  const overview=card.querySelector(".syllabus-overview");
+  if(overview){
+    const stats=syllabusStats(state.rows[index].subject);
+    overview.innerHTML=`<strong>${stats.done}/${stats.total} done</strong><br>${stats.doing} in progress · ${stats.pending} pending<br>${stats.priorityLeft} priority remaining`;
+  }
+  save();
+}
+
+function setChapterCoverage(subject,paper,chapter,value,slider){
+  const item=chapterItem(subject,paper,chapter);
+  if(!item) return;
+  const key=syllabusKey(subject,paper,chapter);
+  const coverage=Math.max(0,Math.min(item.lessons.length,Number(value)||0));
+  state.chapterCoverage[key]=coverage;
+
+  item.lessons.forEach((lesson,idx)=>{
+    if(idx<coverage){
+      if(state.lessonSkipped[lesson.id]===true){
+        state.lessonStatus[lesson.id]=false;
+      }else{
+        state.lessonStatus[lesson.id]=true;
+      }
+    }else{
+      state.lessonStatus[lesson.id]=false;
+      delete state.lessonSkipped[lesson.id];
+    }
+  });
+  syncChapterStatus(subject,paper,item);
+  refreshChapterItem(slider,subject,paper,chapter);
+}
+
+function toggleLesson(subject,paper,chapter,lessonId,index,btn){
+  const item=chapterItem(subject,paper,chapter);
+  if(!item) return;
+  const key=syllabusKey(subject,paper,chapter);
+  let coverage=Math.max(0,Math.min(item.lessons.length,Number(state.chapterCoverage[key]||0)));
+  const currentlyDone=state.lessonStatus[lessonId]===true;
+
+  if(currentlyDone){
+    state.lessonStatus[lessonId]=false;
+    state.lessonSkipped[lessonId]=true;
+    coverage=Math.max(coverage,index+1);
+  }else{
+    state.lessonStatus[lessonId]=true;
+    delete state.lessonSkipped[lessonId];
+    coverage=Math.max(coverage,index+1);
+  }
+  state.chapterCoverage[key]=coverage;
+  syncChapterStatus(subject,paper,item);
+  refreshChapterItem(btn,subject,paper,chapter);
+}
+
+function cycleSyllabusStatus(subject,paper,chapter,btn){
+  const item=chapterItem(subject,paper,chapter);
+  const key=syllabusKey(subject,paper,chapter);
+
+  if(item && item.lessons?.length){
+    const current=chapterDetailState(subject,paper,item).status;
+
+    if(current==="pending"){
+      // Quick move to "In progress": complete the first lesson.
+      state.chapterCoverage[key]=Math.max(1,Number(state.chapterCoverage[key]||0));
+      const first=item.lessons[0];
+      state.lessonStatus[first.id]=true;
+      delete state.lessonSkipped[first.id];
+    }else if(current==="doing"){
+      // Quick move to "Done": complete every lesson.
+      state.chapterCoverage[key]=item.lessons.length;
+      item.lessons.forEach(l=>{
+        state.lessonStatus[l.id]=true;
+        delete state.lessonSkipped[l.id];
+      });
+    }else{
+      // Done -> Pending.
+      state.chapterCoverage[key]=0;
+      item.lessons.forEach(l=>{
+        state.lessonStatus[l.id]=false;
+        delete state.lessonSkipped[l.id];
+      });
+    }
+    syncChapterStatus(subject,paper,item);
+    refreshChapterItem(btn,subject,paper,chapter);
+    return;
+  }
+
+  const current=state.syllabusStatus[key]||"pending";
+  state.syllabusStatus[key]= current==="pending" ? "doing" : current==="doing" ? "done" : "pending";
+  const card=btn.closest(".subject");
+  const index=[...document.querySelectorAll(".subject")].indexOf(card);
+  refreshSyllabusCard(card,index);
+  card.querySelector(".syllabus-panel").classList.add("open");
+}
+
+function addCustomSyllabusItem(subject,btn){
+  const paper=prompt("Paper / section name (for example: 1st Paper, 2nd Paper, Grammar):","Syllabus");
+  if(!paper) return;
+  const name=prompt("Chapter / topic name:");
+  if(!name) return;
+  const customKey=String(subject||"").trim().toLowerCase();
+  const list=state.customSyllabus[customKey] ||= [];
+  const next=(list.reduce((m,x)=>Math.max(m,Number(x.chapter)||0),0)+1);
+  list.push({chapter:next,name,priority:false,paper});
+  const card=btn.closest(".subject");
+  const index=[...document.querySelectorAll(".subject")].indexOf(card);
+  refreshSyllabusCard(card,index);
+  card.querySelector(".syllabus-panel").classList.add("open");
+}
+
+function save(){
+  state.target=Number(document.getElementById("target").value||85);
+  state.defaultHY=Number(document.getElementById("defaultHY").value||36);
+
+  let persisted=false;
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    window.memoryStore.save(state);
+    persisted=true;
+  }catch(e){
+    persisted=false;
+  }
+
+  const s=document.getElementById("saveState");
+  if(s){
+    s.textContent=persisted ? "Saved locally ✓" : "Session only";
+    if(persisted) setTimeout(()=>{ if(s) s.textContent="Saved locally"; },900);
+  }
+}
+
+
+function updateSubjectCard(i, card){
+  const r=state.rows[i];
+  const c=calc(r);
+  const [label,klass]=status(c);
+
+  const statusEl=card.querySelector(".status");
+  if(statusEl){
+    statusEl.className="status "+klass;
+    statusEl.textContent=label;
+  }
+
+  // Lightweight updates only: do not rebuild inputs, preserving typing focus.
+  const vals=card.querySelectorAll(".metric .val");
+  if(vals.length>=4){
+    vals[0].textContent=pct(c.second);
+    vals[1].textContent=pct(c.combined);
+    vals[2].textContent=c.isICT
+      ? (Number.isFinite(c.need2)?c.need2.toFixed(1)+"/"+c.writtenMax:"—")
+      : pct(c.need1);
+    vals[3].textContent=pct(c.max);
+  }
+
+  save();
+  updateOverall();
+}
+
+function updateField(i,key,value,el){
+  state.rows[i][key]=value;
+  const card=el.closest(".subject");
+  updateSubjectCard(i,card);
+}
+
+function updateSubjectName(i,value,el){
+  state.rows[i].subject=value;
+  const card=el.closest(".subject");
+  card.className="subject "+subjectClass(value);
+  const launch=card.querySelector(".syllabus-launch");
+  if(launch) launch.innerHTML=syllabusLaunchHtml(value);
+  save();
+  // Structural mark fields and the full syllabus panel refresh after leaving the name field.
+  el.onblur=()=>render();
+  updateOverall();
+}
+
+function render(){
+  const root=document.getElementById("subjects");
+  root.innerHTML="";
+  state.rows.forEach((r,i)=>{
+    const c=calc(r);
+    const [label,klass]=status(c);
+    const el=document.createElement("article");
+    el.className="subject "+subjectClass(r.subject);
+    el.innerHTML=`
+      <div class="subject-top">
+        <input class="subject-name" value="${safe(r.subject)}" oninput="updateSubjectName(${i},this.value,this)">
+        <div class="subject-top-actions">
+          <button class="syllabus-launch" onclick="toggleSyllabus(this)">${syllabusLaunchHtml(r.subject)}</button>
+          <span class="status ${klass}">${label}</span>
+        </div>
+      </div>
+      <div class="syllabus-panel">${syllabusPanelHtml(r.subject)}</div>
+      <div class="mark-grid">
+        <div class="mark"><label>HY %</label><input type="number" min="0" max="100" step=".1" value="${r.hy||""}" placeholder="${hyEl.value}" oninput="updateField(${i},'hy',this.value,this)"></div>
+        <div class="mark"><label>CT1 /15</label><input type="number" min="0" max="15" step=".1" value="${r.ca1||""}" oninput="updateField(${i},'ca1',this.value,this)"></div>
+        <div class="mark"><label>CT2 /15</label><input type="number" min="0" max="15" step=".1" value="${r.ca2||""}" oninput="updateField(${i},'ca2',this.value,this)"></div>
+
+        <div class="mark"><label>${c.isICT?'Test':'2nd Written'} /${c.writtenMax}</label><input type="number" min="0" max="${c.writtenMax}" step=".1" value="${r.test2||""}" oninput="updateField(${i},'test2',this.value,this)"></div>
+
+        ${c.practicalSubject
+          ? `<div class="mark"><label>${c.isICT?'Practical':'2nd Practical'} /25</label><input type="number" min="0" max="25" step=".1" value="${r.pr2||""}" oninput="updateField(${i},'pr2',this.value,this)"></div>`
+          : `<div class="mark"><label>Practical</label><input value="N/A" disabled style="background:#dfe3e8;color:#555;cursor:not-allowed"></div>`}
+
+        ${c.isICT
+          ? `<div class="mark"><label>1st Paper</label><input value="N/A" disabled style="background:#dfe3e8;color:#555;cursor:not-allowed"></div>`
+          : c.practicalSubject
+            ? `<div class="mark"><label>1st Written /75</label><input type="number" min="0" max="75" step=".1" value="${r.test1||""}" oninput="updateField(${i},'test1',this.value,this)"></div>`
+            : `<div class="mark"><label>1st Test /100</label><input type="number" min="0" max="100" step=".1" value="${r.test1||""}" oninput="updateField(${i},'test1',this.value,this)"></div>`}
+
+        ${(!c.isICT && c.practicalSubject)
+          ? `<div class="mark"><label>1st Practical /25</label><input type="number" min="0" max="25" step=".1" value="${r.pr1||""}" oninput="updateField(${i},'pr1',this.value,this)"></div>`
+          : ``}
+      </div>
+
+      ${c.practicalSubject
+        ? `<div class="practical-cap">Realistic practical ceiling for projections:
+             <input type="number" min="0" max="25" step=".1" value="${r.prCap||23}" oninput="updateField(${i},'prCap',this.value,this)"> /25
+           </div>
+           <div class="practical-note">Actual practical fields still accept up to 25. This ceiling only affects “maximum possible” and blank-future projections.</div>`
+        : ``}
+
+      <div class="metrics">
+        <div class="metric"><div class="lab">${c.isICT?'Final result':'2nd-paper result'}</div><div class="val">${pct(c.second)}</div></div>
+        <div class="metric"><div class="lab">${c.isICT?'Target status':'Overall subject avg'}</div><div class="val">${pct(c.combined)}</div></div>
+        <div class="metric"><div class="lab">${c.isICT?'Need on written':'Need 1st total'}</div><div class="val">${c.isICT?(Number.isFinite(c.need2)?c.need2.toFixed(1)+"/"+c.writtenMax:"—"):pct(c.need1)}</div></div>
+        <div class="metric"><div class="lab">Max possible</div><div class="val">${pct(c.max)}</div></div>
+      </div>
+    `;
+    root.appendChild(el);
+  });
+  save();
+  updateOverall();
+}
+
+function addSubject(){state.rows.push({subject:"New Subject",hy:"",ca1:"",ca2:"",test2:"",pr2:"",test1:"",pr1:"",prCap:"23"});render()}
+function refreshAllCards(){
+  document.querySelectorAll(".subject").forEach((card,i)=>updateSubjectCard(i,card));
+  save();
+  updateOverall();
+}
+targetEl.addEventListener("input",refreshAllCards);
+hyEl.addEventListener("input",refreshAllCards);
+
+function copySummary(){
+  const lines=[`Target ${targetEl.value}%`,`Default HY ${hyEl.value}%`];
+  state.rows.forEach(r=>{
+    const c=calc(r);
+    const [lab]=status(c);
+    lines.push(`${r.subject}: HY ${r.hy||hyEl.value}%, CT1 ${r.ca1||"-"}/15, CT2 ${r.ca2||"-"}/15, ${c.isICT?"Test":"2nd written"} ${r.test2||"-"}/${c.writtenMax}, ${c.practicalSubject?"2nd practical "+(r.pr2||"-")+"/25, ":""}${c.isICT?"1st paper N/A":c.practicalSubject?"1st written "+(r.test1||"-")+"/75, 1st practical "+(r.pr1||"-")+"/25":"1st test "+(r.test1||"-")+"/100"}, max ${c.max.toFixed(1)}%, status ${lab}`);
+  });
+  lines.push("");
+  lines.push("Upcoming exams / deadlines:");
+  [...state.examSchedule]
+    .filter(x=>!x.done)
+    .sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+    .forEach(x=>lines.push(`${x.date} (${scheduleDayName(x.date)}) — ${x.type}: ${x.subject} — ${x.syllabus}`));
+
+  lines.push("");
+  lines.push("Syllabus progress:");
+  state.rows.forEach(r=>{
+    const s=syllabusStats(r.subject);
+    if(s.total){
+      const data=syllabusDataFor(r.subject);
+      let lessonDone=0,lessonTotal=0;
+      Object.values(data.papers).flat().forEach(ch=>{
+        (ch.lessons||[]).forEach(l=>{
+          lessonTotal++;
+          if(state.lessonStatus[l.id]===true) lessonDone++;
+        });
+      });
+      lines.push(`${r.subject}: ${s.done}/${s.total} chapters done, ${s.doing} in progress, ${s.priorityLeft} priority remaining${lessonTotal?`, lessons ${lessonDone}/${lessonTotal}`:""}`);
+    }
+  });
+  navigator.clipboard.writeText(lines.join("\n")).then(()=>alert("Copied. Paste it into ChatGPT."));
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="marks-journal-backup.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importData(){
+  const x=document.createElement("input");
+  x.type="file";x.accept=".json,application/json";
+  x.onchange=()=>{
+    const f=x.files[0];if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const imported=JSON.parse(rd.result);
+        if(!imported || !Array.isArray(imported.rows) || !imported.rows.every(r=>r && typeof r.subject==="string")) throw new Error("Invalid backup");
+        state=imported;
+        targetEl.value=state.target??85;
+        hyEl.value=state.defaultHY??36;
+        render();
+      }catch(e){alert("That backup could not be read.")}
+    };
+    rd.readAsText(f);
+  };
+  x.click();
+}
+function resetData(){
+  if(confirm("Reset all marks and return to the starter data?")){
+    state=structuredClone(starter);
+    targetEl.value=85;hyEl.value=36;render();
+  }
+}
+render();
+renderSchedule();
+})().catch(e=>{document.body.textContent="Unable to load saved data. Please reload when the server is available. Your saved data has not been changed."; console.error(e);});
+</script>
+</body>
+</html>
