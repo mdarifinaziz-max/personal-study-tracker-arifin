@@ -2419,14 +2419,15 @@ function updateSubjectName(i,value,el){
   if(launch) launch.innerHTML=syllabusLaunchHtml(value);
   save();
   // Structural mark fields and the full syllabus panel refresh after leaving the name field.
-  el.onblur=()=>render();
+  el.onblur=()=>render(i);
   updateOverall();
 }
 
-function render(){
+function render(onlyIndex=null){
   const root=document.getElementById("subjects");
-  root.innerHTML="";
+  if(onlyIndex===null) root.innerHTML="";
   state.rows.forEach((r,i)=>{
+    if(onlyIndex!==null && i!==onlyIndex) return;
     const c=calc(r);
     const [label,klass]=status(c);
     const el=document.createElement("article");
@@ -2476,7 +2477,8 @@ function render(){
         <div class="metric"><div class="lab">Max possible</div><div class="val">${pct(c.max)}</div></div>
       </div>
     `;
-    root.appendChild(el);
+    if(onlyIndex!==null) root.children[i].replaceWith(el);
+    else root.appendChild(el);
   });
   save();
   updateOverall();
@@ -2558,6 +2560,30 @@ function resetData(){
     targetEl.value=85;hyEl.value=36;render();
   }
 }
+// Inline HTML handlers need these functions on the global object.
+Object.assign(window, {
+  addCustomSyllabusItem,
+  addSubject,
+  copySummary,
+  cycleSyllabusStatus,
+  deleteSchedule,
+  editSchedule,
+  exportData,
+  importData,
+  resetData,
+  safe,
+  setChapterCoverage,
+  submitSchedule,
+  syncScheduleDay,
+  toggleAgenda,
+  toggleChapterDetail,
+  toggleLesson,
+  toggleRoutine,
+  toggleScheduleDone,
+  toggleSyllabus,
+  updateField,
+  updateSubjectName
+});
 render();
 renderSchedule();
 })().catch(e=>{const notice=document.createElement("div"); notice.setAttribute("role","alert"); notice.style.cssText="position:fixed;top:0;left:0;right:0;padding:18px;background:#641c23;color:white;z-index:99999"; notice.textContent="The tracker could not start: "+e.message+". Existing saved data has not been deleted.";document.body.prepend(notice); console.error(e);});
